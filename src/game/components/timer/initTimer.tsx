@@ -15,7 +15,7 @@ const Timer = React.memo(({game}:{game})=>{
 				current.innerHTML = `${counter}`
 				
 				const userC = game.players.findIndex(el=>+el.id == +JSON.parse(localStorage.getItem('user') || '').id)
-				if(counter == 0){
+				if(counter <= 0){
 					if(userC == game.attackerIndex){
 						const gameId = JSON.parse(localStorage.getItem("game_status") || '').gameId
 						finishTurn(gameId).catch()

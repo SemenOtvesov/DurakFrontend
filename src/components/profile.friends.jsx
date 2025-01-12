@@ -37,6 +37,7 @@ const ProfileFriends = () => {
 
 	return (
 		<div className="profile_friends">
+			{console.log(friends)}
 			{friends && friends.length > 0 ? (
 				friends.map((friend, index) => (
 					<div className="row anim_sjump" key={index}>
@@ -44,14 +45,14 @@ const ProfileFriends = () => {
 							<img
 								className="picture"
 								src={
-									userInfo?.tgNickname
-										? `https://t.me/i/userpic/160/${userInfo?.tgNickname}.jpg`
-										: (userInfo.profilePhoto == 'profile/1.png' ? '/res/skins/profile/1.png' : userInfo.profilePhoto)
+									friend?.tgNickname
+										? `https://t.me/i/userpic/160/${friend?.tgNickname}.jpg`
+										: (friend.profilePhoto == 'profile/1.png' ? '/res/skins/profile/1.png' : friend.profilePhoto)
 								}
 
 								onLoad={(e) => {
 									if (e.target.width < 10) {
-										e.target.src = userInfo.profilePhoto == 'profile/1.png' ? '/res/skins/profile/1.png' : userInfo.profilePhoto
+										e.target.src = friend.profilePhoto == 'profile/1.png' ? '/res/skins/profile/1.png' : friend.profilePhoto
 									}
 								}}
 								alt="friend"

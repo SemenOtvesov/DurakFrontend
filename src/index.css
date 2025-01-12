@@ -166,7 +166,7 @@ max-height: 100vh;
 }
 
 .pb-80 {
-  padding-bottom:calc( 67px + 0.625rem * 2);
+  padding-bottom:calc( 100px + 0.625rem * 2);
 }
 
 .page_title {

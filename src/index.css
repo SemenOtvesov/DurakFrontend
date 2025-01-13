@@ -167,8 +167,8 @@ max-height: calc(100dvh - 78px);
 
 .pb-80 {
   padding-bottom:calc( 100px + 0.625rem * 2);
-  max-height: 100vh;
-  height: 100vh;
+  max-height: 100dvh;
+  height: 100dvh;
 }
 
 .page_title {

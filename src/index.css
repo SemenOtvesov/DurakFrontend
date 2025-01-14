@@ -154,11 +154,9 @@ button:active {
   -webkit-overflow-scrolling: touch;
   flex: 1;
   position: relative;
-  padding: calc(var(--container-padding) + var(--ios-padding-top)) var(--container-padding) var(--ios-padding-bottom) var(--container-padding);
+  padding: var(--container-padding) var(--container-padding) 0px var(--container-padding);
   max-height: calc(100dvh - 78px);
   overscroll-behavior: none;
-
-
 }
 
 .row {
@@ -315,6 +313,7 @@ button:active {
   min-height: 100dvh;
   background: #0f1620;
   overflow: hidden;
+  padding: var(--ios-padding-top) 0 var(--ios-padding-bottom);
 }
 
 .page .menu_section,

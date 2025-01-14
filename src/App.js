@@ -6,6 +6,7 @@ import Routes from "./router/routes";
 import Providers from "./Prodivers";
 import Preloader from "./includes/preloader";
 import initUser from "./api/initUser";
+import { useEffect } from "react";
 
 function App({ intlProviderValue }) {
   const [loading, setLoading] = React.useState(true);
@@ -88,9 +89,29 @@ function App({ intlProviderValue }) {
 }
 
 export default function AppWithProviders() {
+
+	useEffect(()=>{
+		if (iOS()) {
+			document.documentElement.style.setProperty('--ios-padding-top', `${80}px`);
+			document.documentElement.style.setProperty('--ios-padding-bottom', `${110}px`);
+		} else {
+			document.documentElement.style.setProperty('--ios-padding-top', `${0}px`);
+			document.documentElement.style.setProperty('--ios-padding-bottom', `${0}px`);
+		}
+	})
   return (
     <Providers>
       <App />
     </Providers>
   );
+}
+
+export function iOS() {
+    return (
+        ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'].includes(
+            navigator.platform,
+        ) ||
+        // iPad on iOS 13 detection
+        (navigator.userAgent.includes('Mac') && 'ontouchend' in document)
+    );
 }

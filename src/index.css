@@ -150,14 +150,13 @@ button:active {
   gap: 12px;
   width: 100%;
   overflow-y: scroll;
-	overflow-x: hidden; 
-	-webkit-overflow-scrolling: touch;
+  overflow-x: scroll; 
+  -webkit-overflow-scrolling: touch;
   flex: 1;
   position: relative;
-  padding: var(--container-padding) var(--container-padding) 0px
-    var(--container-padding);
-max-height: calc(100dvh - 78px);
-overscroll-behavior: none;
+  padding: var(--container-padding) var(--container-padding) 0px var(--container-padding);
+  max-height: calc(100dvh - 78px);
+  overscroll-behavior: none;
 }
 
 .row {
@@ -170,6 +169,7 @@ overscroll-behavior: none;
   padding-bottom:calc( 100px + 0.625rem * 2);
   max-height: 100dvh;
   height: 100dvh;
+  overflow: hidden;
 }
 
 .page_title {
@@ -312,6 +312,7 @@ overscroll-behavior: none;
   flex-direction: column;
   min-height: 100dvh;
   background: #0f1620;
+  overflow: hidden;
 }
 
 .page .menu_section,

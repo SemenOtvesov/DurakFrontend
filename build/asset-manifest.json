@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.79b2a1e9.css",
-    "main.js": "/static/js/main.8c0074f3.js",
+    "main.js": "/static/js/main.508cd014.js",
     "static/media/SF_Pro_Rounded_Regular.ttf": "/static/media/SF_Pro_Rounded_Regular.1eeaf1332ceeea5b68db.ttf",
     "static/media/premium.svg": "/static/media/premium.4abcb81bf65568341ea4c19878dcee56.svg",
     "static/media/premiumMask.png": "/static/media/premiumMask.a14cb3d692ebd0b2afcc.png",
@@ -49,10 +49,10 @@
     "static/media/checkMarkPass.svg": "/static/media/checkMarkPass.e80cea25fa0f8b23e06091a30483b85b.svg",
     "static/media/Flag_of_Russia.svg": "/static/media/Flag_of_Russia.b41328698709cf180d8d19cd65d03050.svg",
     "main.79b2a1e9.css.map": "/static/css/main.79b2a1e9.css.map",
-    "main.8c0074f3.js.map": "/static/js/main.8c0074f3.js.map"
+    "main.508cd014.js.map": "/static/js/main.508cd014.js.map"
   },
   "entrypoints": [
     "static/css/main.79b2a1e9.css",
-    "static/js/main.8c0074f3.js"
+    "static/js/main.508cd014.js"
   ]
 }

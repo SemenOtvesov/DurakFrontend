@@ -92,8 +92,8 @@ export default function AppWithProviders() {
 
 	useEffect(()=>{
 		if (iOS()) {
-			document.documentElement.style.setProperty('--ios-padding-top', `${80}px`);
-			document.documentElement.style.setProperty('--ios-padding-bottom', `${110}px`);
+			document.documentElement.style.setProperty('--ios-padding-top', `${30}px`);
+			document.documentElement.style.setProperty('--ios-padding-bottom', `${0}px`);
 		} else {
 			document.documentElement.style.setProperty('--ios-padding-top', `${0}px`);
 			document.documentElement.style.setProperty('--ios-padding-bottom', `${0}px`);

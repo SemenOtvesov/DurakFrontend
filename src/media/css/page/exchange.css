@@ -15,6 +15,10 @@
   display: none;
 }
 
+.exchange .container {
+  max-height: 100dvh;
+}
+
 .exchange .echange .btn_change {
   display: flex;
   font-weight: 500;

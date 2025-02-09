@@ -5,7 +5,7 @@ import responsePossibleCards from '../responce/responsePossibleCards.ts'
 
 let lastCountCard = 5, lastArrayCard = []
 let userCardsLocal = []
-const Cards = React.memo(({game}: {game})=>{
+const Cards = React.memo(({game, setAnimatePosition}: {game, setAnimatePosition})=>{
 	const cardBoxRef = useRef<HTMLDivElement>(null)
 	const [renderCard, setRenderCard] = useState([])
 	const userId = JSON.parse(localStorage.getItem('user') || '').id
@@ -47,7 +47,7 @@ const Cards = React.memo(({game}: {game})=>{
 
 	return (
 		<>
-			<AllDeck game={game} setRenderCard={setRenderCardC}/>
+			<AllDeck game={game} setRenderCard={setRenderCardC} setAnimatePosition={setAnimatePosition}/>
 			<div className="player_self" ref={cardBoxRef}></div>
 		</>
 	)
@@ -76,6 +76,10 @@ function animationStart(game, cardBoxRef, userId, renderCard, setUserCards){
 		if(curr){
 			usersCards.forEach(user=>{
 				if(user.id == userId){
+					user.cards.sort((p, n)=>{
+						return p.nominal > n.nominal ? 1 : -1
+					})
+
 					let refresh = true
 	
 					if(user.cards.length > lastCountCard){
@@ -107,9 +111,13 @@ function animationStart(game, cardBoxRef, userId, renderCard, setUserCards){
 						}
 					})
 
+					
 					userCardsLocal = user.cards.map(el=>el.current)
 					setUserCards(userCardsLocal)
-					animateGetCardsPlayerSelf(user.cards.map(el=>el.current), curr, refresh, comp)
+					user.cards.sort((p, n)=>{
+						return p.nominal > n.nominal ? 1 : -1
+					})
+					animateGetCardsPlayerSelf(user.cards.reverse().map(el=>el.current), curr, refresh, comp)
 				}
 			})
 		}

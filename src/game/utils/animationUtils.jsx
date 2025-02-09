@@ -64,7 +64,7 @@ export const animateGetCardsPlayerSelf = (
 				function getCoef() {
 					let c = 2
 					if (elements.length > 12) {
-						c = 2.5
+						c = 1.9
 					} else if (elements.length > 8) {
 						c = 2
 					} else if (elements.length > 2) {
@@ -76,7 +76,7 @@ export const animateGetCardsPlayerSelf = (
 				}
 				const pos = {
 					x: parentRect.x + parentRect.width - offsetX - elementWidth / coef,
-					y: parentRect.y - parentRect.height - elementHeight,
+					y: parentRect.y - parentRect.height / 0.85 - elementHeight,
 				}
 
 				if (refresh && comp.includes(index)) {

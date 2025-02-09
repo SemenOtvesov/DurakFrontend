@@ -8,9 +8,10 @@ import ConstCard from "./cosntCard.tsx";
 import ChangeCard from "./tableCards/changeCard.tsx";
 import EnemyCard from "./tableCards/enemyCard.tsx";
 import EndGamePopap from "./endGamePopap.tsx";
+import CanvasElement from "./canvasElement.tsx";
+import CanvasLinter from "./canvasLinter.tsx";
 
-
-function GameMain({ game, emoji, setEmoji }) {
+function GameMain({ game, emoji, setEmoji, getAnimatePosition, setAnimatePosition }) {
 	const [showEmojiPopup, setShowEmojiPopup] = useState(false);
 	const userId = JSON.parse(localStorage.getItem('user')).id
 
@@ -27,8 +28,9 @@ function GameMain({ game, emoji, setEmoji }) {
 
 		<ChangeCard game={game} />
 		<EnemyCard game={game} />
-
-		<Cards game={game} />
+		<Cards game={game} setAnimatePosition={setAnimatePosition} />
+		<CanvasElement />
+		<CanvasLinter game={game} getAnimatePosition={getAnimatePosition} setAnimatePosition={setAnimatePosition} />
 
 		<PlayerButtons game={game} setShowEmojiPopup={setShowEmojiPopup} />
 		<Emoji showEmojiPopup={showEmojiPopup} setShowEmojiPopup={setShowEmojiPopup} />

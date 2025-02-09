@@ -17,7 +17,7 @@ function ChangeCard ({game}){
 			<span className="change_card" id="change_cart" ref={changeCardRef}
 				style={{
 					transform: 
-						`translate(calc(50vw - clamp(20px, 5vw, 40px) - ${length * (boxWidth/4)}px), calc(58vh - 60px))`, 
+						`translate(calc(45vw - ${length * (boxWidth/4)}px), calc(58vh - 60px))`, 
 				}}
 			>
 				{attackerCards.map((card, index)=>(
@@ -27,9 +27,9 @@ function ChangeCard ({game}){
 						style={{ 
 							zIndex: game.deck.length - index, 
 							transform: `translate(${
-								index > 2 ? 110*(index-3) : 110*index
+								index == 0 ? -18 : index > 2 ? (index-3 == 0 ? 18 : (130*(index-3) + 10 * (index-3))) : 100*index + 5 * index
 							}%, ${
-								index > 2 ? -110 : 0
+								index > 2 ? -105 : 5
 							}%)`
 						}}
 						key={`${index}${card.name}${card.value}`}

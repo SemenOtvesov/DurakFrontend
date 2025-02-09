@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import cardClick from "./cardClick.ts";
+import { cardDown } from "./cardDrag.ts";
 
 const GameCard = (
 	({ type, name, value, style, typeCard, trumpCard = {},
 		setRenderCard, hide, pointerNone, indexInTable = undefined, game,
-		index, ...props
+		index, setAnimatePosition, ...props
 	}) => {
 		const refCard = useRef(null)
 		const [userCosmetic] = useState(
@@ -32,9 +33,10 @@ const GameCard = (
 				data-index={index}
 				{...props}
 				style={trumpCheck ? { zIndex: 1 } : { ...style }}
-				onClick={e => cardClick(e, name, value, refCard, game)}
+				onClick={e => { cardClick(e, setAnimatePosition, name, value, refCard, game, 'nonNone') }}
+				onMouseDown={e => cardDown(e, name, value, refCard, game)}
 			>
-				<div className="game_card_wrapper">
+				<div className="game_card_wrapper" draggable="false" >
 					<img className="game_card_front"
 						src={`/res/skins${userCosmetic?.find((item) => item.cosmetic?.type === "card")?.cosmetic?.link}`}
 						alt=""

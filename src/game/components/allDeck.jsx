@@ -2,7 +2,7 @@ import React, { useEffect, useLayoutEffect, useState } from "react";
 import GameCard from "../res/components/gameCard/gameCard";
 import { numberCardName } from "./player.tsx";
 
-const AllDeck = React.memo(({ game, setRenderCard }) => {
+const AllDeck = React.memo(({ game, setRenderCard, setAnimatePosition }) => {
 	const [allDeck, setAllDeck] = useState([])
 	useEffect(() => {
 		if (game) {
@@ -40,6 +40,7 @@ const AllDeck = React.memo(({ game, setRenderCard }) => {
 				setRenderCard={setRenderCard}
 				hide={opponentCard.includes(index)}
 				game={game}
+				setAnimatePosition={setAnimatePosition}
 			></GameCard>
 		))}
 	</>

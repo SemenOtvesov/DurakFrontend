@@ -46,7 +46,6 @@ function PlayerButtons ({game, setShowEmojiPopup}){
 			presenceAttCards = false
 		}
 	}
-	console.log(game)
 	return <>
 		{(game?.status !== "await" && game?.status !== "load") && (
 				<div className="control_btns">
@@ -59,7 +58,7 @@ function PlayerButtons ({game, setShowEmojiPopup}){
 					} */}
 
 					<div className="player__button-container">
-						<button  onClick={passEvent} className={`
+						<button onClick={passEvent} className={`
 								player__button 
 								${(presenceAttCards && !clickButnUserId) && 'pas'} 
 								${(clickButnUserId && coveredCards) && 'play'}
@@ -91,11 +90,13 @@ function PlayerButtons ({game, setShowEmojiPopup}){
 }
 
 function passEvent(){
-	const timerTick = document.getElementById('timerTick')
-	if(timerTick && +timerTick.innerHTML > 2){
-		const gameId = JSON.parse(localStorage.getItem("game_status") || '').gameId
-		finishTurn(gameId).catch()
-	}
+	setTimeout(()=>{
+		const timerTick = document.getElementById('timerTick')
+		if(timerTick && +timerTick.innerHTML > 2){
+			const gameId = JSON.parse(localStorage.getItem("game_status") || '').gameId
+			finishTurn(gameId).catch()
+		}
+	}, 1500)
 }
 
 export default PlayerButtons

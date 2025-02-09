@@ -5,8 +5,17 @@ import Lobby from "./components/lobby.tsx";
 import GameMain from "./components/gameMain.jsx";
 import expectation from "./mainFn/expectation.ts";
 import responseStartGame from "./responce/responseStartGame.ts";
+import { cardDown, cardMove, cardUp } from "./res/components/gameCard/cardDrag.ts";
 
 
+let startAnimatePosition = [{ x: null, y: null }]
+function setAnimatePosition(v) {
+	console.log(v, 'setFn')
+	startAnimatePosition = [v]
+}
+function getAnimatePosition() {
+	return startAnimatePosition[0]
+}
 // game
 const Game = () => {
 	const [game, setGame] = useState(JSON.parse(localStorage.getItem("game_status") || ''))
@@ -28,9 +37,21 @@ const Game = () => {
 		const resize = () => {
 			setGame(p => ({ ...p }))
 		}
+
 		window.addEventListener('resize', resize)
-		return () => window.removeEventListener('resize', resize)
-	}, [])
+
+		const upFn = cardUp.bind(this, game, setAnimatePosition)
+		window.addEventListener('mousemove', cardMove)
+		window.addEventListener('mouseup', upFn)
+		window.addEventListener('mousedown', cardDown)
+		return () => {
+			window.removeEventListener('resize', resize)
+
+			window.removeEventListener('mousemove', cardMove)
+			window.removeEventListener('mouseup', upFn)
+			window.removeEventListener('mousedown', cardDown)
+		}
+	})
 
 	useEffect(() => {
 		sectionRef.current.style.height = window.innerHeight + 'px';
@@ -51,7 +72,7 @@ const Game = () => {
 			}}
 		>
 			{expectationState && <Lobby game={game} setExpectation={setExpectationState} />}
-			{!expectationState && <GameMain game={game} emoji={emoji} setEmoji={setEmoji} />}
+			{!expectationState && <GameMain game={game} emoji={emoji} setEmoji={setEmoji} getAnimatePosition={getAnimatePosition} setAnimatePosition={setAnimatePosition} />}
 		</section>
 	);
 };

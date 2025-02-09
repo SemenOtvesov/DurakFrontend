@@ -1,17 +1,32 @@
 import sendWalking from "../../../responce/sendWalking.ts"
-import { animateVibrateCard, animateMoveTo } from "../../../utils/animationUtils"
+import { animateVibrateCard } from "../../../utils/animationUtils"
 
 type TlastCardActive = {name:string,value: string,ref:React.MutableRefObject<HTMLElement> | null}
 let lastCardActive:TlastCardActive = { 
 	name: '', value: '', ref: null,
 }
-
-function cardClick(e, name, value, refCard, game) {
+function cardClick(e, setAnimatePosition, name, value, refCard, game, dragErrFn, defendCard?: TlastCardActive, movReq?: 'movReq') {
+	console.log(e, setAnimatePosition, name, value, refCard, game, dragErrFn, defendCard, movReq)
+	let globErrFn: null | (()=>void) = null
+	if(dragErrFn){
+		globErrFn = dragErrFn
+	}
+	if(defendCard){
+		lastCardActive = defendCard
+	}
+	if(e.target.className.includes('movReq')){
+		if(movReq == undefined){
+			return
+		}
+	}
+	if(e.target.closest('[data-name]').className.includes('moved')){
+		return
+	}
 	if (e.target.dataset.side == 'back') {
 		if (refCard.current && refCard.current.dataset.trump != 'true') {
 			if (lastCardActive['name'] == name && lastCardActive['value'] == value) {
 				const gameId = JSON.parse(localStorage.getItem('game_status') || '').gameId
-				sendReqVarType(game, gameId, name, value, refCard)
+				sendReqVarType(game, gameId, name, value, refCard, globErrFn, setAnimatePosition)
 			} else if(e.target.dataset.side != 'onTable') {
 				const lastRef = lastCardActive['ref']
 				if (lastRef && lastRef.current) { 
@@ -65,22 +80,31 @@ function cardClick(e, name, value, refCard, game) {
 		
 					refCard.current.dataset.changeLock = 'True'
 					if(changeCart && cardAnim){
-						animateMoveTo(
-							cardAnim,
-							changeCart,
-							+refCard.current.dataset.indexInTable,
-							'enemy'
-						)
+						// animateMoveTo(
+						// 	cardAnim,
+						// 	changeCart,
+						// 	+refCard.current.dataset.indexInTable,
+						// 	'enemy'
+						// )
 					}
 				}).catch(err=>{
+					setAnimatePosition && setAnimatePosition({x: null, y: null})
 					const lastRef = lastCardActive.ref
 					if(lastRef){
-						err.status == 400 && animateVibrateCard(lastRef.current)
+						if(globErrFn && globErrFn != 'none' && globErrFn != 'nonNone'){
+							globErrFn()
+							globErrFn = null
+						}
+						setTimeout(()=>{
+							if(globErrFn != 'none'){
+								err.status == 400 && animateVibrateCard(lastRef.current)
+								globErrFn = null
+							}
+						}, 300)
 					}
 				})	
 			}
 
-			console.log(lastCardOnTableCheck)
 			if(game.type == 'SHULLERS'  && !lastCardOnTableCheck){
 				sendWalking(gameId, {name, nominal: value} ,{},'shulling')
 				.then(res=>console.log(res))
@@ -92,7 +116,7 @@ function cardClick(e, name, value, refCard, game) {
 
 export default cardClick
 
-function sendReqVarType(game, gameId, name, value, refCard){
+function sendReqVarType(game, gameId, name, value, refCard, globErrFn, setAnimatePosition){
 	let attack: any = {name, nominal: value}
 	let defend: any = {}
 	let typeReq = 'attack'
@@ -125,15 +149,26 @@ function sendReqVarType(game, gameId, name, value, refCard){
 			const changeCart =  document.getElementById('change_cart')
 			refCard.current.dataset.changeLock = 'True'
 			if(changeCart){
-				animateMoveTo(
-					refCard.current,
-					changeCart,
-					res.data.attackerCards.length-1,
-					'change'
-				)
+				// animateMoveTo(
+				// 	refCard.current,
+				// 	changeCart,
+				// 	res.data.attackerCards.length-1,
+				// 	'change'
+				// )
 			}
 		}).catch(err=>{
-			err.status == 400 && animateVibrateCard(refCard.current)
+			setAnimatePosition({x: null, y: null})
+			if(globErrFn && globErrFn != 'none' && globErrFn != 'nonNone'){
+				globErrFn()
+				globErrFn = null
+			}
+			setTimeout(()=>{
+				if(globErrFn != 'none'){
+					err.status == 400 && animateVibrateCard(refCard.current)
+					globErrFn = null
+				}
+			}, 300)
+			
 		})
 	}
 }

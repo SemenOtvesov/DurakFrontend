@@ -88,15 +88,20 @@ function PlayerButtons ({game, setShowEmojiPopup}){
 			)}
 	</>
 }
-
+let dbCheck = true
 function passEvent(){
-	setTimeout(()=>{
-		const timerTick = document.getElementById('timerTick')
-		if(timerTick && +timerTick.innerHTML > 2){
-			const gameId = JSON.parse(localStorage.getItem("game_status") || '').gameId
-			finishTurn(gameId).catch()
-		}
-	}, 1500)
+	console.log(dbCheck)
+	if(dbCheck){
+		dbCheck = false
+		setTimeout(()=>{
+			const timerTick = document.getElementById('timerTick')
+			if(timerTick && +timerTick.innerHTML > 2){
+				const gameId = JSON.parse(localStorage.getItem("game_status") || '').gameId
+				finishTurn(gameId).catch()
+			}
+			setTimeout(()=>{dbCheck = true},1500)
+		}, 1500)
+	}
 }
 
 export default PlayerButtons

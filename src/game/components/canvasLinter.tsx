@@ -195,7 +195,11 @@ function canvasAnimation(game, getAnimatePosition, setAnimatePosition){
 							СopyCanvas(canvas, copyCtx)
 							
 							const startAnimatePosition = getAnimatePosition()
-							const quantityStep = Math.floor(scrollHeight * 0.8 - scrollHeight * cardPosMax)
+							let quantityStep = Math.floor(scrollHeight * 0.8 - scrollHeight * cardPosMax)
+
+							if(defCard.playerOwner != userId){
+								quantityStep = Math.floor(scrollHeight * cardPosMax)
+							}
 
 							let setetValue = 10
 
@@ -205,10 +209,11 @@ function canvasAnimation(game, getAnimatePosition, setAnimatePosition){
 										(attackerCards.length > 0 ? scrollWidth*0.05 * (attackerCards.length > 3 ? 3 : attackerCards.length) : 0) + 
 										cardsWidth * (i % 3) + 20 * (i % 3)
 
-									const y = scrollHeight*0.8-60 + 
+									const y = scrollHeight*(defCard.playerOwner != userId ? 0 : 0.8)-60 + 
 										scrollWidth * 0.34/2 - 
 										(Math.floor(i / 3) * 10 + 
-										Math.floor(i / 3) * cardsHeigth) - (ind < setetValue ? quantityStep : (quantityStep - ind))
+										Math.floor(i / 3) * cardsHeigth) + 
+										(defCard.playerOwner != userId ? (quantityStep-ind) : - (ind < setetValue ? quantityStep : (quantityStep - ind))) 
 
 									const maxY = scrollHeight*cardPosMax-60 + 
 										scrollWidth * 0.34/2 - 
@@ -243,6 +248,7 @@ function canvasAnimation(game, getAnimatePosition, setAnimatePosition){
 									)
 									
 									console.log(startAnimatePosition, 'attakPos', stepX, 'x', stepY, 'y')
+									if(defCard.playerOwner == userId){
 									if(stepX != null && stepY != null){
 										if(stepX >= 0 && stepY >= 0){
 											ctx.clearRect(
@@ -394,6 +400,23 @@ function canvasAnimation(game, getAnimatePosition, setAnimatePosition){
 											)
 										}
 										
+									}}else{
+										ctx.clearRect(
+											-cardsWidth/2 - 2,
+											-(cardsHeigth/2 + cardsHeigth*0.2),
+											cardsWidth + 4, 
+											cardsHeigth*0.2
+										);
+										if(y - (cardsHeigth/2 + cardsHeigth*0.2) < scrollHeight * 0.3){
+											GetDeleteArea(
+												ctx, 
+												copyCanvas, 
+												x - cardsWidth/2 - 2,
+												y - (cardsHeigth/2 + cardsHeigth*0.2),
+												cardsWidth + 4, 
+												cardsHeigth*0.2,
+											)
+										}
 									}
 									
 									

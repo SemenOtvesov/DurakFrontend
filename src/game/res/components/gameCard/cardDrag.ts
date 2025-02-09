@@ -18,14 +18,16 @@ let scrollWidth = Math.max(
 
 export const cardDown = (e)=>{
 	const card = e.target.closest('[data-name]')
-	if(card && card.className.includes('Mov')){
-		startX = e.pageX
-		startY = e.pageY
+	if(card && card.className.includes('Mov') && e.changedTouches){
+		startX = e.changedTouches[0].pageX
+		startY = e.changedTouches[0].pageY
 
 		e.target.closest('[data-name]').querySelector('[data-side="back"]')?.classList.add('movReq')
 
 		dragName = card.dataset.name
 		dragNominal = card.dataset.nominal
+
+		console.log(dragName, dragNominal)
 
 		const cardStyle = card.getAttribute('style')
 		initStyle = cardStyle
@@ -38,6 +40,7 @@ let checkOneMove = true
 export const cardMove = (e)=>{
 	const cards = [...document.querySelectorAll('[data-name]')]
 
+	console.log(dragName, dragNominal)
 	if(checkTap && dragName != '' && dragNominal != ''){
 		if(checkOneMove){
 			const tableCrads = document.querySelectorAll('[data-name]')
@@ -52,8 +55,9 @@ export const cardMove = (e)=>{
 		}
 		const cardStyle = initStyle
 	
-		let xOffset = e.pageX - startX
-		let yOffset = e.pageY - startY
+		let xOffset = e.changedTouches[0].pageX - startX
+		let yOffset = e.changedTouches[0].pageY - startY
+		console.log(xOffset, yOffset)
 	
 		let splitStyle = cardStyle.split('calc(')
 	
@@ -92,9 +96,9 @@ export const cardUp = (game, setAnimatePosition, e)=>{
 	const refCard = {current: card}
 	
 	const userC = game.players.findIndex(el=>+el.id == +JSON.parse(localStorage.getItem('user') || '').id)
-	if(e.pageX >= xMin && e.pageX <= xMax && e.pageY >= yMin && e.pageY <= yMax){
+	if(e.changedTouches[0].pageX >= xMin && e.changedTouches[0].pageX <= xMax && e.changedTouches[0].pageY >= yMin && e.changedTouches[0].pageY <= yMax){
 		if(userC != game.attackerIndex){
-			setAnimatePosition({x: e.pageX, y: e.pageY})
+			setAnimatePosition({x: e.changedTouches[0].pageX, y: e.changedTouches[0].pageY})
 
 			cardClick(e, setAnimatePosition, name, value, refCard, game, 'none', {name, value, ref: {current: e.target.closest('[data-name]')}}, 'movReq')
 			e.target.closest('[data-name]').classList.add('pointerNone')
@@ -106,7 +110,7 @@ export const cardUp = (game, setAnimatePosition, e)=>{
 				items?.forEach(el=>{
 					const elRect = el.getBoundingClientRect()
 
-					if(elRect.left <= e.pageX && elRect.right >= e.pageX && elRect.top <= e.pageY && elRect.bottom >= e.pageY){
+					if(elRect.left <= e.changedTouches[0].pageX && elRect.right >= e.changedTouches[0].pageX && elRect.top <= e.changedTouches[0].pageY && elRect.bottom >= e.changedTouches[0].pageY){
 						// @ts-ignore: Unreachable code error
 						target = el.querySelector('[data-side="onTable"]')
 					}
@@ -121,10 +125,10 @@ export const cardUp = (game, setAnimatePosition, e)=>{
 			}, 200)
 			
 		}else{
-			setAnimatePosition({x: e.pageX, y: e.pageY})
+			setAnimatePosition({x: e.changedTouches[0].pageX, y: e.changedTouches[0].pageY})
 			clearAnimateDate(false)
 
-			cardClick({target: card}, setAnimatePosition, name, value, refCard, game, ()=>{
+			cardClick({target: card.querySelector('[data-side="back"]')}, setAnimatePosition, name, value, refCard, game, ()=>{
 				setAnimatePosition({x: null, y: null})
 				e.target.closest('[data-name]').setAttribute('style', initStyle)
 

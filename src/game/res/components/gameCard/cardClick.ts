@@ -6,7 +6,7 @@ let lastCardActive:TlastCardActive = {
 	name: '', value: '', ref: null,
 }
 function cardClick(e, setAnimatePosition, name, value, refCard, game, dragErrFn, defendCard?: TlastCardActive, movReq?: 'movReq') {
-	console.log(e, setAnimatePosition, name, value, refCard, game, dragErrFn, defendCard, movReq)
+	console.log(e, '\n', setAnimatePosition,'\n', name,'\n', value,'\n', refCard,'\n', game, '\n',dragErrFn,'\n', defendCard,'\n', movReq)
 	let globErrFn: null | (()=>void) = null
 	if(dragErrFn){
 		globErrFn = dragErrFn

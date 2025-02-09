@@ -802,7 +802,7 @@ function canvasAnimation(game, getAnimatePosition, setAnimatePosition){
 
 			const updateStartPosInterval = setInterval(()=>{
 				// console.log(defenderLocalCheckAnim && defenderLocalCheckAnim)
-				if((defenderLocalCheckAnim && defenderLocalCheckAnim || game.defenderCardsFromMap.length == 0)){
+				if((defenderLocalCheckAnim && defenderLocalCheckAnim) || game.defenderCardsFromMap.length || !game.defenderCardsFromMap.find(el=>el != null) ){
 					setAnimatePosition({x: null, y: null})
 					clearInterval(updateStartPosInterval)
 				}
@@ -853,7 +853,6 @@ function GetDeleteArea (ctx, copyCanvas, x, y, width, height){
 	const croppedData = copyCanvas.toDataURL('image/png');
 
 	getPartOfImage({x, y, width, height, src: croppedData}).then(res=>{
-		console.log(x, y, width, height)
 		if(res){
 			const img = new Image()
 			img.onload = () => {
@@ -865,7 +864,6 @@ function GetDeleteArea (ctx, copyCanvas, x, y, width, height){
 			}
 			img.src = res
 		}
-		
 	})
 } 
 

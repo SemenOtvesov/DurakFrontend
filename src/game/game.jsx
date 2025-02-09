@@ -41,15 +41,15 @@ const Game = () => {
 		window.addEventListener('resize', resize)
 
 		const upFn = cardUp.bind(this, game, setAnimatePosition)
-		window.addEventListener('mousemove', cardMove)
-		window.addEventListener('mouseup', upFn)
-		window.addEventListener('mousedown', cardDown)
+		window.addEventListener('touchmove', cardMove)
+		window.addEventListener('touchend', upFn)
+		window.addEventListener('touchstart', cardDown)
 		return () => {
 			window.removeEventListener('resize', resize)
 
-			window.removeEventListener('mousemove', cardMove)
-			window.removeEventListener('mouseup', upFn)
-			window.removeEventListener('mousedown', cardDown)
+			window.removeEventListener('touchmove', cardMove)
+			window.removeEventListener('touchend', upFn)
+			window.removeEventListener('touchstart', cardDown)
 		}
 	})
 

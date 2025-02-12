@@ -48,7 +48,7 @@ function PlayerButtons ({game, setShowEmojiPopup}){
 	}
 	return <>
 		{(game?.status !== "await" && game?.status !== "load") && (
-				<div className="control_btns">
+				<div className="control_btns" style={{zIndex: 10, bottom: '20%', position: 'fixed', left: 0, width: '100vw'}}>
 					{/* {
 						game.type == 'SHULLERS' ? 
 						<button className="cheat">

@@ -7,6 +7,9 @@ import expectation from "./mainFn/expectation.ts";
 import responseStartGame from "./responce/responseStartGame.ts";
 import { cardDown, cardMove, cardUp } from "./res/components/gameCard/cardDrag.ts";
 
+import CanvasElement from "./components/canvasElement.tsx";
+import PlayerButtons from "./components/playerButtons.tsx";
+import ChangeCard from "./components/tableCards/changeCard.tsx";
 
 let startAnimatePosition = [{ x: null, y: null }]
 function setAnimatePosition(v) {
@@ -22,7 +25,11 @@ const Game = () => {
 	const [expectationState, setExpectationState] = useState(true)
 	const [emoji, setEmoji] = useState(null)
 	const [playerAmount, setPlayerAmount] = useState(0)
+
 	const sectionRef = useRef(null)
+	const canvasRef = useRef(null)
+
+	const [showEmojiPopup, setShowEmojiPopup] = useState(false);
 
 	useEffect(() => { expectation({ setGame, setEmoji, setExpectationState, setPlayerAmount }) }, [])
 
@@ -59,22 +66,45 @@ const Game = () => {
 	const userCosmetic = JSON.parse(localStorage.getItem("user_cosmetic"));
 
 	return (
-		<section
-			ref={sectionRef}
-			className="game"
-			style={{
-				backgroundImage: `url(/res/skins${userCosmetic?.find((item) => item.cosmetic?.type === "table")
-					?.cosmetic?.link
-					})`,
-				backgroundRepeat: "no-repeat",
-				backgroundSize: "auto 100%",
-				backgroundPosition: 'center'
-			}}
-		>
-			{expectationState && <Lobby game={game} setExpectation={setExpectationState} />}
-			{!expectationState && <GameMain game={game} emoji={emoji} setEmoji={setEmoji} getAnimatePosition={getAnimatePosition} setAnimatePosition={setAnimatePosition} />}
-		</section>
+		<>
+			<section
+				ref={sectionRef}
+				className="game"
+				style={{
+					backgroundImage: `url(/res/skins${userCosmetic?.find((item) => item.cosmetic?.type === "table")
+						?.cosmetic?.link
+						})`,
+					backgroundRepeat: "no-repeat",
+					backgroundSize: "auto 100%",
+					backgroundPosition: 'center',
+				}}
+			>
+				{expectationState && <Lobby game={game} setExpectation={setExpectationState} />}
+				{!expectationState &&
+					<>
+						<GameMain
+							game={game}
+							emoji={emoji}
+							setEmoji={setEmoji}
+							getAnimatePosition={getAnimatePosition}
+							setAnimatePosition={setAnimatePosition}
+							canvasRef={canvasRef}
+							setShowEmojiPopup={setShowEmojiPopup}
+							showEmojiPopup={showEmojiPopup}
+						/>
+						<CanvasElement game={game} />
+					</>
+				}
+			</section>
+			{!expectationState &&
+				<>
+					<ChangeCard game={game} />
+					<PlayerButtons game={game} setShowEmojiPopup={setShowEmojiPopup} />
+				</>
+			}
+		</>
 	);
 };
 
 export default Game;
+

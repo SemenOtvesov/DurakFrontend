@@ -33,8 +33,7 @@ const GameCard = (
 				data-index={index}
 				{...props}
 				style={trumpCheck ? { zIndex: 1 } : { ...style }}
-				onClick={e => { cardClick(e, setAnimatePosition, name, value, refCard, game, 'nonNone') }}
-				onMouseDown={e => cardDown(e, name, value, refCard, game)}
+				onClick={e => { cardClick(e, name, value, refCard, game, undefined, 'table') }}
 			>
 				<div className="game_card_wrapper" draggable="false" >
 					<img className="game_card_front"

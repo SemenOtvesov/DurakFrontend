@@ -3,6 +3,10 @@ body {
   position: relative;
 }
 
+.pointerNone{
+	pointer-events: none;
+}
+
 .game {
   --button-height: clamp(26px, 5vw, 32px);
   --button-margin: clamp(8px, 1vw, 12px);
@@ -171,7 +175,7 @@ body {
   bottom: -45px;
 }
 
-.game .control_btns {
+.control_btns {
   display: flex;
   position: fixed;
   bottom: 20vh;
@@ -266,9 +270,9 @@ body {
 }
 
 /* game cards */
-.game .game_card_box {
+.game_card_box {
   display: block;
-  width: var(--card-width);
+  width: 20vw;
   aspect-ratio: 2/3;
   background-size: 100% 100%;
   position: fixed;
@@ -296,6 +300,8 @@ body {
 	transform: translate(clamp(0px, -5vw, -35px), calc(50vh - 60px)) rotate(90deg);
 }
 .game_card_box.Mov{
+	opacity: 0;
+	pointer-events: none;
 	transform: translate(clamp(-20px, -5vw, -35px), calc(50vh - 60px)) rotate(175deg);
 }
 .game_card_box.hidden{
@@ -383,12 +389,12 @@ body {
 }
 
 /* change_card */
-.game .change_card {
+.change_card {
   display: flex;
   position: fixed;
   left: 0;
   top: 0;
-  width: var(--card-width);
+  width: 20vw;
   aspect-ratio: 2/3;
   background-size: 100% 100%;
   transform-origin: center center;
@@ -416,7 +422,7 @@ body {
   position: fixed;
   left: 0;
   top: 0;
-  width: var(--card-width);
+  width: 20vw;
   aspect-ratio: 2/3;
   background-color: transparent;
   background-size: 100% 100%;

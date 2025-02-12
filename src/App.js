@@ -1,4 +1,4 @@
-import React from "react";
+import React, { createContext, useState } from "react";
 import "./app.css";
 import "./media/css/animations.css";
 // Routes
@@ -7,6 +7,8 @@ import Providers from "./Prodivers";
 import Preloader from "./includes/preloader";
 import initUser from "./api/initUser";
 import { useEffect } from "react";
+import { Application } from "pixi.js";
+import LocationLinter from "./locationLinter.tsx";
 
 function App({ intlProviderValue }) {
   const [loading, setLoading] = React.useState(true);
@@ -88,8 +90,10 @@ function App({ intlProviderValue }) {
   return <>{loading === true ? <Preloader /> : <Routes />}</>;
 }
 
+export const CanvasContext = createContext('CanvasContext');
 export default function AppWithProviders() {
-
+	const [CanvasApp, setCanvasApp] = useState({})
+	
 	useEffect(()=>{
 		if (iOS()) {
 			document.documentElement.style.setProperty('--ios-padding-top', `${0}px`);
@@ -99,9 +103,30 @@ export default function AppWithProviders() {
 			document.documentElement.style.setProperty('--ios-padding-bottom', `${0}px`);
 		}
 	})
+
+	useEffect(()=>{
+	(async () =>
+		{
+			const app = new Application();
+			await app.init({ backgroundAlpha: 0, resizeTo: window });
+	
+			app.canvas.style.position = 'absolute'
+			app.canvas.style.top = '0'
+			app.canvas.style.left = '0'
+
+			app.canvas.id = 'gameCanvas'
+
+			document.body.appendChild(app.canvas);
+			setCanvasApp(app)
+		})();
+	}, [])
+
   return (
     <Providers>
-      <App />
+      	<CanvasContext.Provider value={CanvasApp}>
+      		<App />
+			<LocationLinter/>
+      	</CanvasContext.Provider>
     </Providers>
   );
 }

@@ -10,6 +10,7 @@ import { cardDown, cardMove, cardUp } from "./res/components/gameCard/cardDrag.t
 import CanvasElement from "./components/canvasElement.tsx";
 import PlayerButtons from "./components/playerButtons.tsx";
 import ChangeCard from "./components/tableCards/changeCard.tsx";
+import Emoji from "./components/emoji.tsx";
 
 let startAnimatePosition = [{ x: null, y: null }]
 function setAnimatePosition(v) {
@@ -98,6 +99,7 @@ const Game = () => {
 			</section>
 			{!expectationState &&
 				<>
+					<Emoji showEmojiPopup={showEmojiPopup} setShowEmojiPopup={setShowEmojiPopup} />
 					<ChangeCard game={game} />
 					<PlayerButtons game={game} setShowEmojiPopup={setShowEmojiPopup} />
 				</>

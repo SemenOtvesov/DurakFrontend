@@ -429,7 +429,7 @@ function clearDrag(target){
 	moveSprite(target, dragCard.x, dragCard.y, 300)
 	setTimeout(()=>{
 		dragCard = {x: null, y: null, name: null, value: null}
-	}, 500)
+	}, 1000)
 }
 
 function moveSprite(sprite, targetX, targetY, duration, easingFunction = (t) => t, targetRotation = null) {

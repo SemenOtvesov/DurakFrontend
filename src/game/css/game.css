@@ -488,7 +488,7 @@ body {
 }
 
 /* Emoji styles */
-.game .emoji_popup {
+.emoji_popup {
   position: fixed;
   bottom: clamp(60px, 15vh, 80px);
   left: 50%;
@@ -510,28 +510,28 @@ body {
   will-change: transform;
 }
 
-.game .emoji_popup.show {
+.emoji_popup.show {
   opacity: 1;
   visibility: visible;
   transform: translateX(-50%) translateY(0);
   animation: popupAppear 0.3s ease;
 }
 
-.game .emoji_button {
+.emoji_button {
   background: none;
   border: none;
-  padding: var(--spacing-small);
+  padding: clamp(5px, 2vw, 10px);
   border-radius: clamp(6px, 2vw, 12px);
   cursor: pointer;
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
-.game .emoji_button img {
+.emoji_button img {
   width: clamp(30px, 8vw, 40px);
   height: clamp(30px, 8vw, 40px);
 }
 
-.game .selected_emoji {
+.selected_emoji {
   position: fixed;
   left: 50%;
   transform: translateX(-50%) translateY(20px);
@@ -551,17 +551,17 @@ body {
 	opacity: 1;
 }
 
-.game .selected_emoji.show {
+.selected_emoji.show {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
   animation: emojiAppear 0.3s ease;
 }
 
-.game .selected_emoji.hide {
+.selected_emoji.hide {
   animation: emojiDisappear 0.3s ease forwards;
 }
 
-.game .selected_emoji img {
+.selected_emoji img {
   width: clamp(40px, 10vw, 60px);
   height: clamp(40px, 10vw, 60px);
 }

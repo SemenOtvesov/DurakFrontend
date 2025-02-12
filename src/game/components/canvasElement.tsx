@@ -55,7 +55,9 @@ const CanvasListener = ({game})=>{
 		const cardPosMax = 0.58
 		if(newCard.name){
 			if(newCard.playerOwner != userId){
-				const texture = await Assets.load(`/res/game/svg/${newCard.name[0].toLowerCase()}${newCard.value}.svg`);
+				const texture = await Assets.load(`/res/game/png/${newCard.name[0].toLowerCase()}${newCard.value}.png`);
+				texture.source.scaleMode = 'linear'
+				
 				CreateCard(
 					canvasWidth / 2 - cardWidth / 2, 
 					-cardHeigth, 
@@ -116,8 +118,8 @@ const CanvasListener = ({game})=>{
 					Math.floor(i / 3) * cardHeigth)
 				
 					//attackerCards[i].playerOwner != userId
-				const texture = await Assets.load(`/res/game/svg/${attackerCards[i].name[0].toLowerCase()}${attackerCards[i].nominal}.svg`);
-			
+				const texture = await Assets.load(`/res/game/png/${attackerCards[i].name[0].toLowerCase()}${attackerCards[i].nominal}.png`);
+				texture.source.scaleMode = 'linear'
 				CreateCard(
 					x, 
 					y, 
@@ -140,7 +142,8 @@ const CanvasListener = ({game})=>{
 		const cardPosMaxDef = 0.57
 		if(newCardDef.name){
 			if(newCardDef.playerOwner != userId){
-				const texture = await Assets.load(`/res/game/svg/${newCardDef.name[0].toLowerCase()}${newCardDef.value}.svg`);
+				const texture = await Assets.load(`/res/game/png/${newCardDef.name[0].toLowerCase()}${newCardDef.value}.png`);
+				texture.source.scaleMode = 'linear'
 				CreateCard(
 					canvasWidth / 2 - cardWidth / 2, 
 					-cardHeigth, 
@@ -184,7 +187,8 @@ const CanvasListener = ({game})=>{
 					Math.floor(enemyCards[i].index / 3) * cardHeigth)
 				
 					//enemyCards[i].playerOwner != userId
-				const texture = await Assets.load(`/res/game/svg/${enemyCards[i].name[0].toLowerCase()}${enemyCards[i].nominal}.svg`);
+				const texture = await Assets.load(`/res/game/png/${enemyCards[i].name[0].toLowerCase()}${enemyCards[i].nominal}.png`);
+				texture.source.scaleMode = 'linear'
 			
 				CreateCard(
 					x, 
@@ -205,7 +209,8 @@ const CanvasListener = ({game})=>{
 		// card for user
 		const usersCard = setPositionCards(stageItemsRef.current, game)
 		for (let i = 0; i < usersCard.length; i++) {
-			const texture = await Assets.load(`/res/game/svg/${usersCard[i].name[0].toLowerCase()}${usersCard[i].nominal}.svg`);
+			const texture = await Assets.load(`/res/game/png/${usersCard[i].name[0].toLowerCase()}${usersCard[i].nominal}.png`);
+			texture.source.scaleMode = 'linear'
 			
 			const offsetItem = (canvasWidth * 0.8 / (usersCard.length > 2 ? usersCard.length + 1 : usersCard.length + 2))
 			// @ts-ignore: Unreachable code error
@@ -226,6 +231,7 @@ const CanvasListener = ({game})=>{
 		function CreateCard(x, y, name, value, texture, width, height, rotation){
 			// Create our little bunny friend..
 			const bunny = new Sprite(texture);
+			
 	
 			// Enable the bunny to be interactive... this will allow it to respond to mouse and touch events
 			bunny.eventMode = 'static';
@@ -429,7 +435,7 @@ function clearDrag(target){
 	moveSprite(target, dragCard.x, dragCard.y, 300)
 	setTimeout(()=>{
 		dragCard = {x: null, y: null, name: null, value: null}
-	}, 1000)
+	}, 500)
 }
 
 function moveSprite(sprite, targetX, targetY, duration, easingFunction = (t) => t, targetRotation = null) {

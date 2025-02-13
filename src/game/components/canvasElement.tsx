@@ -432,10 +432,8 @@ const cardUp = (canvasWidth, canvasHeight, name, value, e)=>{
 }
 
 function clearDrag(target){
+	console.log(dragCard)
 	moveSprite(target, dragCard.x, dragCard.y, 300)
-	setTimeout(()=>{
-		dragCard = {x: null, y: null, name: null, value: null}
-	}, 500)
 }
 
 function moveSprite(sprite, targetX, targetY, duration, easingFunction = (t) => t, targetRotation = null) {

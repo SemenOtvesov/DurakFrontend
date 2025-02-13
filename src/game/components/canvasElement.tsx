@@ -412,6 +412,13 @@ const cardUp = (canvasWidth, canvasHeight, name, value, e)=>{
 						})
 						if (target) { // Проверяем, есть ли элемент под заданными координатами
 							// @ts-ignore: Unreachable code error
+							// @ts-ignore: Unreachable code error
+							const beatenCheck = target.closest('[data-name]').dataset.changeLock == 'True'
+							console.log(beatenCheck, 'bef')
+							if(beatenCheck){
+								const localDrag = {...dragCard}
+								clearDrag(e.target, localDrag.x, localDrag.y)
+							}
 							target.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
 						}else{
 							const localDrag = {...dragCard}

@@ -55,7 +55,7 @@ const CanvasListener = ({game})=>{
 		const cardPosMax = 0.58
 		if(newCard.name){
 			if(newCard.playerOwner != userId){
-				const texture = await Assets.load(`/res/game/png/${newCard.name[0].toLowerCase()}${newCard.value}.png`);
+				const texture = await Assets.load(`/res/game/png_mini/${newCard.name[0].toLowerCase()}${newCard.value}.png`);
 				texture.source.scaleMode = 'linear'
 				
 				CreateCard(
@@ -118,7 +118,7 @@ const CanvasListener = ({game})=>{
 					Math.floor(i / 3) * cardHeigth)
 				
 					//attackerCards[i].playerOwner != userId
-				const texture = await Assets.load(`/res/game/png/${attackerCards[i].name[0].toLowerCase()}${attackerCards[i].nominal}.png`);
+				const texture = await Assets.load(`/res/game/png_mini/${attackerCards[i].name[0].toLowerCase()}${attackerCards[i].nominal}.png`);
 				texture.source.scaleMode = 'linear'
 				CreateCard(
 					x, 
@@ -142,7 +142,7 @@ const CanvasListener = ({game})=>{
 		const cardPosMaxDef = 0.57
 		if(newCardDef.name){
 			if(newCardDef.playerOwner != userId){
-				const texture = await Assets.load(`/res/game/png/${newCardDef.name[0].toLowerCase()}${newCardDef.value}.png`);
+				const texture = await Assets.load(`/res/game/png_mini/${newCardDef.name[0].toLowerCase()}${newCardDef.value}.png`);
 				texture.source.scaleMode = 'linear'
 				CreateCard(
 					canvasWidth / 2 - cardWidth / 2, 
@@ -187,7 +187,7 @@ const CanvasListener = ({game})=>{
 					Math.floor(enemyCards[i].index / 3) * cardHeigth)
 				
 					//enemyCards[i].playerOwner != userId
-				const texture = await Assets.load(`/res/game/png/${enemyCards[i].name[0].toLowerCase()}${enemyCards[i].nominal}.png`);
+				const texture = await Assets.load(`/res/game/png_mini/${enemyCards[i].name[0].toLowerCase()}${enemyCards[i].nominal}.png`);
 				texture.source.scaleMode = 'linear'
 			
 				CreateCard(
@@ -209,7 +209,7 @@ const CanvasListener = ({game})=>{
 		// card for user
 		const usersCard = setPositionCards(stageItemsRef.current, game)
 		for (let i = 0; i < usersCard.length; i++) {
-			const texture = await Assets.load(`/res/game/png/${usersCard[i].name[0].toLowerCase()}${usersCard[i].nominal}.png`);
+			const texture = await Assets.load(`/res/game/png_mini/${usersCard[i].name[0].toLowerCase()}${usersCard[i].nominal}.png`);
 			texture.source.scaleMode = 'linear'
 			
 			const offsetItem = (canvasWidth * 0.8 / (usersCard.length > 2 ? usersCard.length + 1 : usersCard.length + 2))

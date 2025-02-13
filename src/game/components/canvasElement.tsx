@@ -4,7 +4,7 @@ import { Application, Assets, SCALE_MODES, Sprite } from 'pixi.js';
 import { CanvasContext } from '../../App.js';
 import cardClick from '../res/components/gameCard/cardClick.ts';
 
-let dragCard = {x: null, y: null, name: null, value: null}
+let dragCard = {x: null, y: null, name: null, value: null, rotation: null}
 
 let cardInMap: Array<{uid, name, value}> = []
 let localAttackersCard: any[] = []
@@ -14,10 +14,16 @@ let globalGame = {}
 
 let checkReqClick = true
 
+let lockStart = true
+
 const CanvasListener = ({game})=>{
 	globalGame = game
 	const stageItemsRef = useRef<Array<{sprite: any, name: string, nominal: number}>>([]);
 	const CanvasApp: any = useContext(CanvasContext);
+
+	useEffect(()=>{
+		lockStart = true
+	}, [game]);
 
 	(async ()=>{
 		const userId = JSON.parse(localStorage.getItem('user') || '').id
@@ -242,7 +248,7 @@ const CanvasListener = ({game})=>{
 			// Make it a bit bigger, so it's easier to grab
 			bunny.scale.set(3);
 
-			bunny.on('pointerdown', onDragStart.bind(this, {x, y, name, value}), bunny);
+			bunny.on('pointerdown', onDragStart.bind(this, {x, y, name, value, rotation}), bunny);
 	
 			// Move the sprite to its designated position
 			bunny.x = x;
@@ -270,8 +276,9 @@ const CanvasListener = ({game})=>{
 		app.stage.on('pointerupoutside', onDragEnd);
 	
 		function onDragMove(event){
-			if (dragTarget){
-				dragTarget.parent.toLocal(event.global, null, dragTarget.position);
+			if (dragTarget && event.target.children.length == 0 && lockStart){
+				dragTarget.x = event.client.x
+				dragTarget.y = event.client.y
 			}
 		}
 	
@@ -279,19 +286,23 @@ const CanvasListener = ({game})=>{
 			// Store a reference to the data
 			// * The reason for this is because of multitouch *
 			// * We want to track the movement of this particular touch *
-			dragCard = dragCardLocal
+			if(!dragTarget && lockStart){
+				dragCard = dragCardLocal
 
-			e.target.alpha = 0.5;
-			dragTarget = e.target;
-			app.stage.on('pointermove', onDragMove);
+				e.target.alpha = 0.5;
+				dragTarget = e.target;
+				app.stage.on('pointermove', onDragMove);
+			}
+			
 		}
 	
 		function onDragEnd(e){
 			const game = globalGame
 			const userC = game.players.findIndex(el=>+el.id == +JSON.parse(localStorage.getItem('user') || '').id)
 
-			if(e.target.children.length == 0){
-				
+			
+			if(e.target.children.length == 0 && lockStart){
+				lockStart = false
 				if(userC == game.attackerIndex){
 					setTimeout(()=>{
 						if(checkReqClick){
@@ -299,12 +310,13 @@ const CanvasListener = ({game})=>{
 							
 							if(dragCard.name && dragCard.value){
 							cardClick(e, dragCard.name, dragCard.value, undefined, game, ()=>{
-								clearDrag(e.target)
+								const localDrag = {...dragCard}
+							clearDrag(e.target, localDrag.x, localDrag.y)
 							},'click')
 
 							setTimeout(()=>{
 								checkReqClick = true
-							}, 600)
+							}, 1000)
 						}
 				}}, 100)
 				}else{
@@ -316,6 +328,9 @@ const CanvasListener = ({game})=>{
 				app.stage.off('pointermove', onDragMove);
 				dragTarget.alpha = 1;
 				dragTarget = null;
+				setTimeout(()=>{
+					lockStart = true
+				}, 1000)
 			}
 		}
 	})()
@@ -378,7 +393,8 @@ const cardUp = (canvasWidth, canvasHeight, name, value, e)=>{
 					if(name && value){
 						// @ts-ignore: Unreachable code error
 						cardClick(e, name, value, refCard, game, ()=>{
-							clearDrag(e.target)
+							const localDrag = {...dragCard}
+							clearDrag(e.target, localDrag.x, localDrag.y)
 						},'click', {name, value, ref: {current: null}})
 					}
 	
@@ -398,7 +414,8 @@ const cardUp = (canvasWidth, canvasHeight, name, value, e)=>{
 							// @ts-ignore: Unreachable code error
 							target.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
 						}else{
-							clearDrag(e.target)
+							const localDrag = {...dragCard}
+							clearDrag(e.target, localDrag.x, localDrag.y)
 						}
 					}, 200)
 
@@ -414,7 +431,8 @@ const cardUp = (canvasWidth, canvasHeight, name, value, e)=>{
 					checkReq = false
 					if(name && value){
 						cardClick({target: ''}, name, value, refCard, game, ()=>{
-							clearDrag(e.target)
+							const localDrag = {...dragCard}
+							clearDrag(e.target, localDrag.x, localDrag.y)
 							// @ts-ignore: Unreachable code error
 						},'click')
 					}
@@ -427,13 +445,13 @@ const cardUp = (canvasWidth, canvasHeight, name, value, e)=>{
 		}
 		
 	}else{
-		clearDrag(e.target)
+		const localDrag = {...dragCard}
+		clearDrag(e.target, localDrag.x, localDrag.y)
 	}
 }
 
-function clearDrag(target){
-	console.log(dragCard)
-	moveSprite(target, dragCard.x, dragCard.y, 300)
+function clearDrag(target, x, y){
+	moveSprite(target, x, y, 1)
 }
 
 function moveSprite(sprite, targetX, targetY, duration, easingFunction = (t) => t, targetRotation = null) {
@@ -462,6 +480,7 @@ function moveSprite(sprite, targetX, targetY, duration, easingFunction = (t) => 
             const progress = Math.min(1, elapsed / duration);
             const easedProgress = easingFunction(progress);
 
+			console.log(sprite)
             sprite.x = startX + (targetX - startX) * easedProgress;
             sprite.y = startY + (targetY - startY) * easedProgress;
 

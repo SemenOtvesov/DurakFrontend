@@ -286,6 +286,7 @@ const CanvasListener = ({game})=>{
 			// Store a reference to the data
 			// * The reason for this is because of multitouch *
 			// * We want to track the movement of this particular touch *
+			console.log(dragCard)
 			if(!dragTarget && lockStart){
 				dragCard = dragCardLocal
 
@@ -301,7 +302,7 @@ const CanvasListener = ({game})=>{
 			const userC = game.players.findIndex(el=>+el.id == +JSON.parse(localStorage.getItem('user') || '').id)
 
 			
-			if(e.target.children.length == 0 && lockStart){
+			if(e.target.children.length == 0 && lockStart && dragCard.rotation){
 				lockStart = false
 				if(userC == game.attackerIndex){
 					setTimeout(()=>{

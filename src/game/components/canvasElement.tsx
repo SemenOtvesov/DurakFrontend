@@ -248,11 +248,11 @@ const CanvasListener = ({game})=>{
 			// Make it a bit bigger, so it's easier to grab
 			bunny.scale.set(3);
 
-			bunny.on('pointerdown', onDragStart.bind(this, {x, y, name, value, rotation}), bunny);
+			bunny.on('pointerdown', onDragStart.bind(this, {x: Math.floor(x), y: Math.floor(y), name, value, rotation}), bunny);
 	
 			// Move the sprite to its designated position
-			bunny.x = x;
-			bunny.y = y;
+			bunny.x = Math.floor(x);
+			bunny.y = Math.floor(y);
 			bunny.width = width
 			bunny.height = height
 			bunny.rotation = rotation
@@ -277,8 +277,8 @@ const CanvasListener = ({game})=>{
 	
 		function onDragMove(event){
 			if (dragTarget && event.target.children.length == 0 && lockStart){
-				dragTarget.x = event.client.x
-				dragTarget.y = event.client.y
+				dragTarget.x = Math.floor(event.client.x)
+				dragTarget.y = Math.floor(event.client.y)
 			}
 		}
 	
@@ -286,7 +286,6 @@ const CanvasListener = ({game})=>{
 			// Store a reference to the data
 			// * The reason for this is because of multitouch *
 			// * We want to track the movement of this particular touch *
-			console.log(dragCard)
 			if(!dragTarget && lockStart){
 				dragCard = dragCardLocal
 
@@ -459,10 +458,12 @@ const cardUp = (canvasWidth, canvasHeight, name, value, e)=>{
 }
 
 function clearDrag(target, x, y){
-	moveSprite(target, x, y, 1)
+	moveSprite(target, Math.floor(x), Math.floor(y), 1)
 }
 
 function moveSprite(sprite, targetX, targetY, duration, easingFunction = (t) => t, targetRotation = null) {
+	targetX = Math.floor(targetX)
+	targetY = Math.floor(targetY)
     if (!duration) {
         sprite.x = targetX;
         sprite.y = targetY;

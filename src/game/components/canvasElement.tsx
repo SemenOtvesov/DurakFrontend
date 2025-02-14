@@ -278,6 +278,7 @@ const CanvasListener = ({game})=>{
 		app.stage.on('pointerupoutside', onDragEnd);
 	
 		function onDragMove(event){
+			console.log(event.target.rotation)
 			if (dragTarget && event.target.children.length == 0 && lockStart){
 				dragTarget.x = Math.floor(event.client.x)
 				dragTarget.y = Math.floor(event.client.y)
@@ -288,7 +289,8 @@ const CanvasListener = ({game})=>{
 			// Store a reference to the data
 			// * The reason for this is because of multitouch *
 			// * We want to track the movement of this particular touch *
-			if(!dragTarget && lockStart){
+			console.log(e.target.rotation)
+			if(!dragTarget && lockStart && e.target.rotation){
 				dragCard = dragCardLocal
 
 				e.target.alpha = 0.5;
@@ -302,8 +304,8 @@ const CanvasListener = ({game})=>{
 			const game = globalGame
 			const userC = game.players.findIndex(el=>+el.id == +JSON.parse(localStorage.getItem('user') || '').id)
 
-			
-			if(e.target.children.length == 0 && lockStart && dragCard.rotation){
+			console.log(e.target.rotation)
+			if(e.target.children.length == 0 && lockStart && e.target.rotation){
 				lockStart = false
 				if(userC == game.attackerIndex){
 					setTimeout(()=>{

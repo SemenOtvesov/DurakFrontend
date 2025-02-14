@@ -40,7 +40,6 @@ let checkOneMove = true
 export const cardMove = (e)=>{
 	const cards = [...document.querySelectorAll('[data-name]')]
 
-	console.log(dragName, dragNominal)
 	if(checkTap && dragName != '' && dragNominal != ''){
 		if(checkOneMove){
 			const tableCrads = document.querySelectorAll('[data-name]')

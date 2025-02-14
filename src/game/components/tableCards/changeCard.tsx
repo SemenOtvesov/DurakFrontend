@@ -2,6 +2,15 @@ import React, { useRef } from "react";
 import GameCard from "../../res/components/gameCard/gameCard";
 import {genAttackerCards} from './genCards.ts'
 
+const comparsionPos = {
+	0: -30,
+	1: 100,
+	2: 218,
+	3: -30,
+	4: 100,
+	5: 218,
+}
+
 function ChangeCard ({game}){
 	const changeCardRef = useRef<HTMLElement>(null)
 
@@ -27,7 +36,7 @@ function ChangeCard ({game}){
 						style={{ 
 							zIndex: game.deck.length - index, 
 							transform: `translate(${
-								index == 0 ? -18 : index > 2 ? (index-3 == 0 ? 18 : (130*(index-3) + 10 * (index-3))) : 100*index + 5 * index
+								comparsionPos[index] + (attackerCards.length > 3 ? 30 + 22 * (attackerCards.length-4) : 0)
 							}%, ${
 								index > 2 ? -105 : 5
 							}%)`

@@ -119,12 +119,12 @@ export default function AppWithProviders() {
 	(async () =>
 		{
 			const app = new Application();
-			await app.init({ backgroundAlpha: 0, resizeTo: window, resolution: 1, antialias: true, roundPixels: true });
+			await app.init({ backgroundAlpha: 0, resizeTo: window, resolution: 4, antialias: true, roundPixels: true });
 	
 			app.canvas.style.position = 'absolute'
 			app.canvas.style.top = '0'
 			app.canvas.style.left = '0'
-
+  
 			app.canvas.id = 'gameCanvas'
 
 			document.body.appendChild(app.canvas);

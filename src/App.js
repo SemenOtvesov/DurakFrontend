@@ -92,6 +92,17 @@ function App({ intlProviderValue }) {
 
 export const CanvasContext = createContext('CanvasContext');
 export default function AppWithProviders() {
+	let scrollHeight = Math.max(
+		document.body.scrollHeight, document.documentElement.scrollHeight,
+		document.body.offsetHeight, document.documentElement.offsetHeight,
+		document.body.clientHeight, document.documentElement.clientHeight
+	);
+	let scrollWidth = Math.max(
+	document.body.scrollWidth, document.documentElement.scrollWidth,
+	document.body.offsetWidth, document.documentElement.offsetWidth,
+	document.body.clientWidth, document.documentElement.clientWidth
+	);
+
 	const [CanvasApp, setCanvasApp] = useState({})
 	
 	useEffect(()=>{
@@ -108,7 +119,7 @@ export default function AppWithProviders() {
 	(async () =>
 		{
 			const app = new Application();
-			await app.init({ backgroundAlpha: 0, resizeTo: window, resolution: 1, antialias: true, roundPixels: true, forceCanvas: true });
+			await app.init({ backgroundAlpha: 0, resizeTo: window, resolution: 1, antialias: true, roundPixels: true });
 	
 			app.canvas.style.position = 'absolute'
 			app.canvas.style.top = '0'

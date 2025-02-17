@@ -32,6 +32,8 @@ const CanvasListener = ({game})=>{
 		const enemyCards = game.defenderCardsFromMap ? genEnemyCards(game.defenderCardsFromMap, game.attackerCardsFromMap):[]
 
 		const app = CanvasApp
+		console.log(app)
+		app.stage.rotation = 0.001
 
 		const canvasWidth = CanvasApp.screen.width
 		const canvasHeigth = CanvasApp.screen.height
@@ -456,7 +458,7 @@ const cardUp = (canvasWidth, canvasHeight, name, value, e)=>{
 		
 	}else{
 		const localDrag = {...dragCard}
-		clearDrag(e.target, localDrag.x, localDrag.y, localDrag.rotation)
+		clearDrag(e.target, localDrag.x, localDrag.y, -0.06)
 	}
 }
 

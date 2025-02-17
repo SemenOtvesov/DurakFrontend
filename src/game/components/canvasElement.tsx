@@ -456,12 +456,13 @@ const cardUp = (canvasWidth, canvasHeight, name, value, e)=>{
 		
 	}else{
 		const localDrag = {...dragCard}
-		clearDrag(e.target, localDrag.x, localDrag.y)
+		clearDrag(e.target, localDrag.x, localDrag.y, localDrag.rotation)
 	}
 }
 
-function clearDrag(target, x, y){
-	moveSprite(target, Math.floor(x), Math.floor(y), 1)
+function clearDrag(target, x, y, rotation){
+	console.log(x, y)
+	moveSprite(target, Math.floor(x), Math.floor(y), 1, undefined, rotation)
 }
 
 function moveSprite(sprite, targetX, targetY, duration, easingFunction = (t) => t, targetRotation = null) {

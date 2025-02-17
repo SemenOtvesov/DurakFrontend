@@ -11,6 +11,7 @@ import CanvasElement from "./components/canvasElement.tsx";
 import PlayerButtons from "./components/playerButtons.tsx";
 import ChangeCard from "./components/tableCards/changeCard.tsx";
 import Emoji from "./components/emoji.tsx";
+import EndGamePopap from "./components/endGamePopap.tsx";
 
 let startAnimatePosition = [{ x: null, y: null }]
 function setAnimatePosition(v) {
@@ -102,6 +103,7 @@ const Game = () => {
 					<Emoji showEmojiPopup={showEmojiPopup} setShowEmojiPopup={setShowEmojiPopup} />
 					<ChangeCard game={game} />
 					<PlayerButtons game={game} setShowEmojiPopup={setShowEmojiPopup} />
+					<EndGamePopap game={game} />
 				</>
 			}
 		</>

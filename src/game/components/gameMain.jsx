@@ -32,8 +32,6 @@ function GameMain({ game, emoji, setEmoji, getAnimatePosition, setAnimatePositio
 
 		<Emoji showEmojiPopup={showEmojiPopup} setShowEmojiPopup={setShowEmojiPopup} />
 		<ConstCard />
-
-		<EndGamePopap game={game} />
 	</>
 }
 export default GameMain

@@ -290,7 +290,7 @@ const CanvasListener = ({game})=>{
 			// Store a reference to the data
 			// * The reason for this is because of multitouch *
 			// * We want to track the movement of this particular touch *
-			console.log(e.target.rotation)
+			console.log(e.target.rotation, dragTarget, lockStart)
 			if(!dragTarget && lockStart && e.target.rotation){
 				dragCard = dragCardLocal
 
@@ -327,15 +327,15 @@ const CanvasListener = ({game})=>{
 				}else{
 					cardUp(canvasWidth, canvasHeigth, dragCard.name, dragCard.value, e)
 				}
+				setTimeout(()=>{
+					lockStart = true
+				}, 1000)
 			}
 
 			if (dragTarget){
 				app.stage.off('pointermove', onDragMove);
 				dragTarget.alpha = 1;
 				dragTarget = null;
-				setTimeout(()=>{
-					lockStart = true
-				}, 1000)
 			}
 		}
 	})()

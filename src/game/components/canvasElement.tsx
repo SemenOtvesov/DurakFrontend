@@ -305,7 +305,7 @@ const CanvasListener = ({game})=>{
 			const game = globalGame
 			const userC = game.players.findIndex(el=>+el.id == +JSON.parse(localStorage.getItem('user') || '').id)
 
-			console.log(e.target.rotation)
+			console.log(e.target.children.length == 0 , lockStart , e.target.rotation)
 			if(e.target.children.length == 0 && lockStart && e.target.rotation){
 				lockStart = false
 				if(userC == game.attackerIndex){
@@ -314,10 +314,11 @@ const CanvasListener = ({game})=>{
 							checkReqClick = false
 							
 							if(dragCard.name && dragCard.value){
-							cardClick(e, dragCard.name, dragCard.value, undefined, game, ()=>{
 								const localDrag = {...dragCard}
-							clearDrag(e.target, localDrag.x, localDrag.y)
-							},'click')
+								cardClick(e, dragCard.name, dragCard.value, undefined, game, ()=>{
+									
+									clearDrag(e.target, localDrag.x, localDrag.y)
+								},'click')
 
 							setTimeout(()=>{
 								checkReqClick = true

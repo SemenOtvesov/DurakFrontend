@@ -23,10 +23,12 @@ import PageRanking from "../pages/ranking";
 import InviteFrends from "../pages/inviteFrends";
 // Game
 import Game from "../game/game";
+import LocationLinter from "../locationLinter.tsx";
 // Routes
 const AppRoutes = () => {
 	return (
 		<Router>
+			<LocationLinter />
 			<Switch>
 				<Route path="/" element={<Main />} />
 				<Route path="/games" element={<Games />} />

@@ -136,7 +136,7 @@ export default function AppWithProviders() {
     <Providers>
       	<CanvasContext.Provider value={CanvasApp}>
       		<App />
-			<LocationLinter/>
+			{/* <LocationLinter/> */}
       	</CanvasContext.Provider>
     </Providers>
   );

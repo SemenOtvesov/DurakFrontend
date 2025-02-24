@@ -117,6 +117,9 @@ function animationStart(game, cardBoxRef, userId, renderCard, setUserCards){
 					user.cards.sort((p, n)=>{
 						return p.nominal > n.nominal ? 1 : -1
 					})
+					user.cards.sort((p, n)=>{
+						return p.name > n.name ? 1 : -1
+					})
 					animateGetCardsPlayerSelf(user.cards.reverse().map(el=>el.current), curr, refresh, comp)
 				}
 			})

@@ -276,7 +276,7 @@ const LobbiesCreate = () => {
 				</div>
 				<div className="btn_bar">
 					<button className="create_btn" onClick={createGame}>
-						Create game
+						<I18nText path="create_game" />
 					</button>
 				</div>
 			</div>

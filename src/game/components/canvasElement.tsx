@@ -316,7 +316,7 @@ const CanvasListener = memo(({game})=>{
 
 			if(stop2linter){
 				stop2linter = false
-				clicked = true
+				
 				console.log(lockStart, 'end')
 				if(e.target.children.length == 0 && lockStart && e.target.rotation){
 					lockStart = false
@@ -327,11 +327,16 @@ const CanvasListener = memo(({game})=>{
 								
 								if(dragCard.name && dragCard.value){
 									const localDrag = {...dragCard}
-									console.log(e.target.x < canvasHeigth * 0.85, e.target.x , canvasHeigth * 0.85)
-									if(moovingLock && e.target.x < canvasHeigth * 0.85){
+									console.log(e.target.x < canvasHeigth * 0.85, e.target.y , canvasHeigth * 0.75)
+									if(moovingLock && e.target.y < canvasHeigth * 0.75){
 										cardClick(e, dragCard.name, dragCard.value, undefined, game, ()=>{
 											clearDrag(e.target, localDrag.x, localDrag.y)
 										},'click')
+									}else{
+										if(dragTarget && localDrag.x){
+											clearDrag(dragTarget, localDrag.x, localDrag.y)
+										}
+										
 									}
 									
 
@@ -368,9 +373,12 @@ const CanvasListener = memo(({game})=>{
 				if (dragTarget){
 					app.stage.off('pointermove', onDragMove);
 					dragTarget.alpha = 1;
-					setTimeout(()=>{dragTarget = null;}, 50)
+					setTimeout(()=>{dragTarget = null;}, 200)
 				}
-			setTimeout(()=>{stop2linter = true}, 200)
+			setTimeout(()=>{
+				clicked = true
+				stop2linter = true
+			}, 200)
 			}
 		}
 	})()

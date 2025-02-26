@@ -12,10 +12,8 @@ const Timer = ({ duration, onFinish, isActive }) => {
 		}
 		setTimeLeft(duration);
 
-		console.log('sdf')
 		timerRef.current.classList.add("timer_active");
 		timerId.current = setInterval(() => {
-			console.log('sdfsd')
 			setTimeLeft((prevTime) => {
 				if (prevTime <= 1) {
 					clearInterval(timerId.current);
@@ -25,7 +23,6 @@ const Timer = ({ duration, onFinish, isActive }) => {
 					}
 					return 0;
 				}
-				console.log(prevTime)
 				return prevTime - 1;
 			});
 		}, 1000);

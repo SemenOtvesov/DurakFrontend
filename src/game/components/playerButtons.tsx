@@ -90,7 +90,6 @@ function PlayerButtons ({game, setShowEmojiPopup}){
 }
 let dbCheck = true
 function passEvent(){
-	console.log(dbCheck)
 	if(dbCheck){
 		dbCheck = false
 

@@ -27,8 +27,6 @@ export const cardDown = (e)=>{
 		dragName = card.dataset.name
 		dragNominal = card.dataset.nominal
 
-		console.log(dragName, dragNominal)
-
 		const cardStyle = card.getAttribute('style')
 		initStyle = cardStyle
 		
@@ -56,7 +54,6 @@ export const cardMove = (e)=>{
 	
 		let xOffset = e.changedTouches[0].pageX - startX
 		let yOffset = e.changedTouches[0].pageY - startY
-		console.log(xOffset, yOffset)
 	
 		let splitStyle = cardStyle.split('calc(')
 	

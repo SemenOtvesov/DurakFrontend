@@ -29,7 +29,6 @@ const CanvasListener = memo(({game})=>{
 	const stageItemsRef = useRef<Array<{sprite: any, name: string, nominal: number}>>([]);
 	const CanvasApp: any = useContext(CanvasContext);
 
-	console.log('render')
 	useEffect(()=>{
 		lockStart = true
 	}, [game]);
@@ -41,7 +40,6 @@ const CanvasListener = memo(({game})=>{
 		const enemyCards = game.defenderCardsFromMap ? genEnemyCards(game.defenderCardsFromMap, game.attackerCardsFromMap):[]
 
 		const app = CanvasApp
-		console.log(app)
 		app.stage.rotation = 0.001
 
 		const canvasWidth = CanvasApp.screen.width
@@ -288,6 +286,7 @@ const CanvasListener = memo(({game})=>{
 			
 			if (dragTarget && event.target.children.length == 0 && lockStart){
 				clicked = false
+				moovingLock = false
 				dragTarget.x = Math.floor(event.client.x)
 				dragTarget.y = Math.floor(event.client.y)
 			}
@@ -298,7 +297,6 @@ const CanvasListener = memo(({game})=>{
 			// Store a reference to the data
 			// * The reason for this is because of multitouch *
 			// * We want to track the movement of this particular touch *
-			console.log(e.target.rotation, dragTarget, lockStart, clicked)
 			if(!dragTarget && lockStart && e.target.rotation && clicked){
 				dragCard = dragCardLocal
 
@@ -317,8 +315,8 @@ const CanvasListener = memo(({game})=>{
 			if(stop2linter){
 				stop2linter = false
 				
-				console.log(lockStart, 'end')
-				if(e.target.children.length == 0 && lockStart && e.target.rotation){
+
+				if(e.target.children.length == 0 && lockStart && e.target.rotation && dragTarget){
 					lockStart = false
 					if(userC == game.attackerIndex){
 						setTimeout(()=>{
@@ -327,15 +325,12 @@ const CanvasListener = memo(({game})=>{
 								
 								if(dragCard.name && dragCard.value){
 									const localDrag = {...dragCard}
-									console.log(e.target.x < canvasHeigth * 0.85, e.target.y , canvasHeigth * 0.75)
-									if(moovingLock && e.target.y < canvasHeigth * 0.75){
+									if(moovingLock){
 										cardClick(e, dragCard.name, dragCard.value, undefined, game, ()=>{
 											clearDrag(e.target, localDrag.x, localDrag.y)
 										},'click')
 									}else{
-										if(dragTarget && localDrag.x){
-											clearDrag(dragTarget, localDrag.x, localDrag.y)
-										}
+										cardUp(canvasWidth, canvasHeigth, dragCard.name, dragCard.value, e)
 										
 									}
 									
@@ -345,23 +340,6 @@ const CanvasListener = memo(({game})=>{
 								}, 1000)
 							}
 					}}, 100)
-					}else if(userC != game.attackerIndex && game.type == "PEREVODNOY"){
-						setTimeout(()=>{
-							if(checkReqClick){
-								checkReqClick = false
-								
-								if(dragCard.name && dragCard.value){
-									const localDrag = {...dragCard}
-									cardClick(e, dragCard.name, dragCard.value, undefined, game, ()=>{
-										
-										clearDrag(e.target, localDrag.x, localDrag.y)
-									},'click')
-
-								setTimeout(()=>{
-									checkReqClick = true
-								}, 1000)
-							}
-						}}, 100)
 					}else{
 						cardUp(canvasWidth, canvasHeigth, dragCard.name, dragCard.value, e)
 					}
@@ -464,15 +442,35 @@ const cardUp = (canvasWidth, canvasHeight, name, value, e)=>{
 							// @ts-ignore: Unreachable code error
 							// @ts-ignore: Unreachable code error
 							const beatenCheck = target.closest('[data-name]').dataset.changeLock == 'True'
-							console.log(beatenCheck, 'bef')
 							if(beatenCheck){
 								const localDrag = {...dragCard}
 								clearDrag(e.target, localDrag.x, localDrag.y)
 							}
 							target.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
-						}else{
-							const localDrag = {...dragCard}
+						}else{console.log(game)
+							if(game.type == "PEREVODNOY"){
+								
+								setTimeout(()=>{
+									if(checkReqClick){
+										checkReqClick = false
+										
+										if(dragCard.name && dragCard.value){
+											const localDrag = {...dragCard}
+											cardClick(e, dragCard.name, dragCard.value, undefined, game, ()=>{
+												
+												clearDrag(e.target, localDrag.x, localDrag.y)
+											},'click')
+		
+										setTimeout(()=>{
+											checkReqClick = true
+										}, 1000)
+									}
+								}}, 100)
+							}else{
+								const localDrag = {...dragCard}
 							clearDrag(e.target, localDrag.x, localDrag.y)
+							}
+							
 						}
 					}, 200)
 
@@ -554,7 +552,8 @@ function moveSprite(sprite, targetX, targetY, duration, easingFunction = (t) => 
             if (progress < 1) {
                 requestAnimationFrame(animate);
             } else {
-				moovingLock = true
+				setTimeout(()=>{moovingLock = true}, 300)
+				
                 resolve();
             }
         };

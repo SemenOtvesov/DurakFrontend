@@ -111,7 +111,6 @@ function canvasAnimation(game, getAnimatePosition, setAnimatePosition){
 			// 				// 				// @ts-ignore: Unreachable code error
 			// 				// 				const offsetX = offsetItem * index  + (canvas.width - (offsetItem * (lngth-3) + (lngth > 8 ?canvas.width * 0.08 : canvas.width*0.22) ))/2
 
-			// 				// 				console.log(i, offsetX, el)
 
 			// 				// 				setTimeout(()=>{
 			// 				// 					const img = new Image()
@@ -223,7 +222,6 @@ function canvasAnimation(game, getAnimatePosition, setAnimatePosition){
 									let stepX: number | null = null
 									let stepY: number | null = null
 
-									console.log((quantityStep/setetValue), 'step')
 									if(startAnimatePosition.x != null){
 										const offsetX = startAnimatePosition.x - x
 										stepX = offsetX / Math.ceil((quantityStep/setetValue))
@@ -246,8 +244,6 @@ function canvasAnimation(game, getAnimatePosition, setAnimatePosition){
 										stepX ? x + stepX * (ind / setetValue ) :x,
 										stepY ? maxY - stepY * ( ind / setetValue ) :y
 									)
-									
-									console.log(startAnimatePosition, 'attakPos', stepX, 'x', stepY, 'y')
 									if(defCard.playerOwner == userId){
 									if(stepX != null && stepY != null){
 										if(stepX >= 0 && stepY >= 0){
@@ -559,7 +555,6 @@ function canvasAnimation(game, getAnimatePosition, setAnimatePosition){
 										const offsetX = maxY - startAnimatePosition.y
 										stepY = offsetX / Math.ceil((quantityStep/setetValue))
 									}
-									console.log(stepY, 'y')
 
 									setTimeout(()=>{
 										renderImage(
@@ -577,8 +572,6 @@ function canvasAnimation(game, getAnimatePosition, setAnimatePosition){
 										)
 
 										if(defCard.playerOwner == userId){
-
-											console.log(stepX, stepY, 'coord')
 											if(stepX != null && stepY != null){
 												if(stepX >= 0 && stepY >= 0){
 													ctx.clearRect(
@@ -801,7 +794,6 @@ function canvasAnimation(game, getAnimatePosition, setAnimatePosition){
 			}
 
 			const updateStartPosInterval = setInterval(()=>{
-				// console.log(defenderLocalCheckAnim && defenderLocalCheckAnim)
 				if((defenderLocalCheckAnim && defenderLocalCheckAnim) || game.defenderCardsFromMap.length || !game.defenderCardsFromMap.find(el=>el != null) ){
 					setAnimatePosition({x: null, y: null})
 					clearInterval(updateStartPosInterval)

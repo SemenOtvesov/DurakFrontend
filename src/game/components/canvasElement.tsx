@@ -1,6 +1,6 @@
-import React, { memo, useContext, useEffect, useLayoutEffect, useRef } from 'react';
+import React, { memo, useContext, useEffect, useRef } from 'react';
 import { genAttackerCards, genEnemyCards } from './tableCards/genCards.ts';
-import { Application, Assets, SCALE_MODES, Sprite } from 'pixi.js';
+import { Assets, Sprite } from 'pixi.js';
 import { CanvasContext } from '../../App.js';
 import cardClick from '../res/components/gameCard/cardClick.ts';
 
@@ -11,17 +11,11 @@ let localAttackersCard: any[] = []
 let localDefenderCard: any[] = []
 
 let globalGame = {}
-
 let checkReqClick = true
-
 let lockStart = true
-
 let clicked = true
-
 let stop2linter = true
-
 let dragTarget = null;
-
 let moovingLock = true
 
 const CanvasListener = memo(({game})=>{
@@ -72,6 +66,7 @@ const CanvasListener = memo(({game})=>{
 			if(newCard.playerOwner != userId){
 				const texture = await Assets.load(`/res/game/png/${newCard.name[0].toLowerCase()}${newCard.value}.png`);
 				texture.source.scaleMode = 'linear'
+				texture.cacheAsBitmap = true
 				
 				CreateCard(
 					canvasWidth / 2 - cardWidth / 2, 
@@ -135,6 +130,7 @@ const CanvasListener = memo(({game})=>{
 					//attackerCards[i].playerOwner != userId
 				const texture = await Assets.load(`/res/game/png/${attackerCards[i].name[0].toLowerCase()}${attackerCards[i].nominal}.png`);
 				texture.source.scaleMode = 'linear'
+				texture.cacheAsBitmap = true
 				CreateCard(
 					x, 
 					y, 
@@ -159,6 +155,7 @@ const CanvasListener = memo(({game})=>{
 			if(newCardDef.playerOwner != userId){
 				const texture = await Assets.load(`/res/game/png/${newCardDef.name[0].toLowerCase()}${newCardDef.value}.png`);
 				texture.source.scaleMode = 'linear'
+				texture.cacheAsBitmap = true
 				CreateCard(
 					canvasWidth / 2 - cardWidth / 2, 
 					-cardHeigth, 
@@ -204,6 +201,7 @@ const CanvasListener = memo(({game})=>{
 					//enemyCards[i].playerOwner != userId
 				const texture = await Assets.load(`/res/game/png/${enemyCards[i].name[0].toLowerCase()}${enemyCards[i].nominal}.png`);
 				texture.source.scaleMode = 'linear'
+				texture.cacheAsBitmap = true
 			
 				CreateCard(
 					x, 
@@ -218,6 +216,7 @@ const CanvasListener = memo(({game})=>{
 			}
 		}
 
+
 		cardInMap = []
 		newCardDef = {name: null, value: null, index: null, playerOwner: null}
 
@@ -226,6 +225,7 @@ const CanvasListener = memo(({game})=>{
 		for (let i = 0; i < usersCard.length; i++) {
 			const texture = await Assets.load(`/res/game/png/${usersCard[i].name[0].toLowerCase()}${usersCard[i].nominal}.png`);
 			texture.source.scaleMode = 'linear'
+			texture.cacheAsBitmap = true
 			
 			const offsetItem = (canvasWidth * 0.8 / (usersCard.length > 2 ? usersCard.length + 1 : usersCard.length + 2))
 			// @ts-ignore: Unreachable code error
@@ -447,7 +447,7 @@ const cardUp = (canvasWidth, canvasHeight, name, value, e)=>{
 								clearDrag(e.target, localDrag.x, localDrag.y)
 							}
 							target.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }));
-						}else{console.log(game)
+						}else{
 							if(game.type == "PEREVODNOY"){
 								
 								setTimeout(()=>{

@@ -277,9 +277,13 @@ const CanvasListener = memo(({game})=>{
 	
 		app.stage.eventMode = 'static';
 		app.stage.hitArea = app.screen;
+		
 		app.stage.off('pointerup', onDragEnd);
+		app.stage.off('pointerupoutside', onDragEnd);
 		app.stage.off('pointerup', onDragEnd);
+
 		app.stage.on('pointerup', onDragEnd);
+		app.stage.on('pointerupoutside', onDragEnd);
 	
 		
 		function onDragMove(event){

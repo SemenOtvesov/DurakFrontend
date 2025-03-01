@@ -1,21 +1,29 @@
 import React, { useEffect, useRef } from "react";
 import finishTurn from "../../responce/sendFinishTurn.ts";
 
+let counter = 30
 const Timer = React.memo(({game}:{game})=>{
 	const timerRef = useRef<HTMLSpanElement>(null)
+
+	useEffect(()=>{
+		counter = 30
+	}, [game])
 
 	useEffect(()=>{
 		let interval: any = null
 
 		const current = timerRef.current
 		if(current){
-			let counter = 30
+			
 			const callback = ()=>{
-				counter--
+				if(counter > 0){
+					counter--
 				current.innerHTML = `${counter}`
+				}
 				
 				const userC = game.players.findIndex(el=>+el.id == +JSON.parse(localStorage.getItem('user') || '').id)
 				if(counter <= 0){
+					
 					if(userC == game.attackerIndex){
 						const gameId = JSON.parse(localStorage.getItem("game_status") || '').gameId
 						finishTurn(gameId).catch()

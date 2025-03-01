@@ -14,6 +14,7 @@ function App({ intlProviderValue }) {
   const [loading, setLoading] = React.useState(true);
   React.useEffect(() => {
     const tg = window.Telegram?.WebApp;
+	tg.lockOrientation()
     const tgReady = () => {
       if (tg) {
         tg.headerColor = "#141019";

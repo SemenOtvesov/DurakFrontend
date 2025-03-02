@@ -18,10 +18,16 @@ let stop2linter = true
 let dragTarget = null;
 let moovingLock = true
 
+let dragStartCheck = true
+let dragAllCheck = true
+
+let canvasAppLocal = {}
+
 const CanvasListener = memo(({game})=>{
 	globalGame = game
 	const stageItemsRef = useRef<Array<{sprite: any, name: string, nominal: number}>>([]);
 	const CanvasApp: any = useContext(CanvasContext);
+	canvasAppLocal = CanvasApp
 
 	useEffect(()=>{
 		lockStart = true
@@ -277,7 +283,7 @@ const CanvasListener = memo(({game})=>{
 	
 		app.stage.eventMode = 'static';
 		app.stage.hitArea = app.screen;
-		
+
 		app.stage.off('pointerup', onDragEnd);
 		app.stage.off('pointerupoutside', onDragEnd);
 		app.stage.off('pointerup', onDragEnd);
@@ -287,81 +293,91 @@ const CanvasListener = memo(({game})=>{
 	
 		
 		function onDragMove(event){
-			
-			if (dragTarget && event.target.children.length == 0 && lockStart){
+			const card = cardInMap.find(el=>el.name == dragCard.name && el.value == dragCard.value)
+			if (card && event.target && card.uid == event.target.uid && dragTarget && event.target.children.length == 0 && lockStart && dragAllCheck){
 				clicked = false
 				moovingLock = false
 				dragTarget.x = Math.floor(event.client.x)
 				dragTarget.y = Math.floor(event.client.y)
 			}
 		}
-	
 		
 		function onDragStart(dragCardLocal, e){
-			// Store a reference to the data
-			// * The reason for this is because of multitouch *
-			// * We want to track the movement of this particular touch *
-			if(!dragTarget && lockStart && e.target.rotation && clicked){
+			if(!dragTarget && lockStart && e.target.rotation && clicked && dragStartCheck && dragAllCheck){
+				dragStartCheck = false
+				setTimeout(()=>{
+					dragStartCheck = true
+				}, 1000)
+				console.log(dragCard, dragCardLocal)
 				dragCard = dragCardLocal
 
 				e.target.alpha = 0.5;
 				dragTarget = e.target;
 				app.stage.on('pointermove', onDragMove);
 			}
-			
 		}
 		
 		
 		function onDragEnd(e){
-			const game = globalGame
-			const userC = game.players.findIndex(el=>+el.id == +JSON.parse(localStorage.getItem('user') || '').id)
-
-			if(stop2linter){
-				stop2linter = false
-				
-
-				if(e.target.children.length == 0 && lockStart && e.target.rotation && dragTarget){
-					lockStart = false
-					if(userC == game.attackerIndex){
-						setTimeout(()=>{
-							if(checkReqClick){
-								checkReqClick = false
-								
-								if(dragCard.name && dragCard.value){
-									const localDrag = {...dragCard}
-									if(moovingLock){
-										cardClick(e, dragCard.name, dragCard.value, undefined, game, ()=>{
-											clearDrag(e.target, localDrag.x, localDrag.y)
-										},'click')
-									}else{
-										cardUp(canvasWidth, canvasHeigth, dragCard.name, dragCard.value, e)
-										
-									}
+			if(dragAllCheck){
+				dragAllCheck = false
+				document.getElementById('gameCanvas')?.classList.add('pointerNone')
+				setTimeout(()=>{
+					dragAllCheck = true
+					document.getElementById('gameCanvas')?.classList.remove('pointerNone')
+				}, 1000)
+	
+				const game = globalGame
+				const userC = game.players.findIndex(el=>+el.id == +JSON.parse(localStorage.getItem('user') || '').id)
+	
+				if(stop2linter){
+					stop2linter = false
+					if(e.target && e.target.children.length == 0 && lockStart && e.target.rotation && dragTarget){
+						lockStart = false
+						if(userC == game.attackerIndex){
+							setTimeout(()=>{
+								if(checkReqClick){
+									checkReqClick = false
 									
-
-								setTimeout(()=>{
-									checkReqClick = true
-								}, 1000)
-							}
-					}}, 100)
-					}else{
-						cardUp(canvasWidth, canvasHeigth, dragCard.name, dragCard.value, e)
+									if(dragCard.name && dragCard.value){
+										const localDrag = {...dragCard}
+										const localTarget = e.target
+										if(moovingLock){
+											cardClick(e, dragCard.name, dragCard.value, undefined, game, ()=>{
+												console.log(localTarget, localDrag)
+												clearDrag(localTarget, localDrag.x, localDrag.y)
+											},'click')
+										}else{
+											cardUp(canvasWidth, canvasHeigth, dragCard.name, dragCard.value, e)
+											
+										}
+										
+	
+									setTimeout(()=>{
+										checkReqClick = true
+									}, 1000)
+								}
+						}}, 100)
+						}else{
+							cardUp(canvasWidth, canvasHeigth, dragCard.name, dragCard.value, e)
+						}
+						setTimeout(()=>{
+							lockStart = true
+						}, 1000)
 					}
-					setTimeout(()=>{
-						lockStart = true
-					}, 1000)
+	
+					if (dragTarget){
+						app.stage.off('pointermove', onDragMove);
+						dragTarget.alpha = 1;
+						setTimeout(()=>{dragTarget = null;}, 200)
+					}
+				setTimeout(()=>{
+					clicked = true
+					stop2linter = true
+				}, 200)
 				}
-
-				if (dragTarget){
-					app.stage.off('pointermove', onDragMove);
-					dragTarget.alpha = 1;
-					setTimeout(()=>{dragTarget = null;}, 200)
-				}
-			setTimeout(()=>{
-				clicked = true
-				stop2linter = true
-			}, 200)
 			}
+			
 		}
 	})()
 	return <></>
@@ -423,10 +439,13 @@ const cardUp = (canvasWidth, canvasHeight, name, value, e)=>{
 					checkReq = false
 					
 					if(name && value){
+						const localDrag = {...dragCard}
+						const localTarget = e.target
+						console.log(localTarget)
 						// @ts-ignore: Unreachable code error
 						cardClick(e, name, value, refCard, game, ()=>{
-							const localDrag = {...dragCard}
-							clearDrag(e.target, localDrag.x, localDrag.y)
+							console.log(localTarget)
+							clearDrag(localTarget, localDrag.x, localDrag.y)
 						},'click', {name, value, ref: {current: null}})
 					}
 	
@@ -472,7 +491,13 @@ const cardUp = (canvasWidth, canvasHeight, name, value, e)=>{
 								}}, 100)
 							}else{
 								const localDrag = {...dragCard}
-							clearDrag(e.target, localDrag.x, localDrag.y)
+								const targetUid = cardInMap.find(el=>el.name == localDrag.name && el.value == localDrag.value)?.uid
+								const target = canvasAppLocal.stage.children.find(el=>
+									targetUid == el.uid
+								)
+								console.log(target)
+								clearDrag(target, localDrag.x, localDrag.y)
+								
 							}
 							
 						}
@@ -508,18 +533,22 @@ const cardUp = (canvasWidth, canvasHeight, name, value, e)=>{
 		if(dragTarget){
 			clearDrag(dragTarget, localDrag.x, localDrag.y, -0.06)
 		}
-		// clearDrag(dragTarget, localDrag.x, localDrag.y, -0.06)
 	}
 }
 
 function clearDrag(target, x, y, rotation){
 	moveSprite(target, Math.floor(x), Math.floor(y), 1, undefined, rotation)
+
+	setTimeout(()=>{dragCard = {x: null, y: null, name: null, value: null, rotation: null}}, 500)
+	
 }
 
 function moveSprite(sprite, targetX, targetY, duration, easingFunction = (t) => t, targetRotation = null) {
+	console.log(sprite)
 	moovingLock = false
 	targetX = Math.floor(targetX)
 	targetY = Math.floor(targetY)
+	if(!sprite){return}
     if (!duration) {
         sprite.x = targetX;
         sprite.y = targetY;

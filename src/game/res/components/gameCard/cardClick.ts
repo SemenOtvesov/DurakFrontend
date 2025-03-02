@@ -7,16 +7,18 @@ let lastCardActive:TlastCardActive = {
 }
 let globErrFn: null | (()=>void) = null
 function cardClick(e, name, value, refCard, game, dragErrFn, type: 'click' | 'table', defendCard?: TlastCardActive) {
-	console.log(e, '\n', name,'\n', value,'\n', refCard,'\n', game, '\n',dragErrFn,'\n', defendCard,'\n')
+	console.log(e, '\n', name,'\n', value,'\n', refCard,'\n', game, '\n',dragErrFn,'\n', defendCard,'\n', type)
 	if(dragErrFn){
 		globErrFn = dragErrFn
 	}
+	console.log(lastCardActive)
 	if(defendCard){
 		lastCardActive = defendCard
 		return 
 	}
 	if (type == 'click') {
 		const gameId = JSON.parse(localStorage.getItem('game_status') || '').gameId
+		console.log('hbhb')
 		sendReqVarType(game, gameId, name, value, refCard, globErrFn)
 	}else{
 		if(e.target.dataset.side == 'onTable' && e.target.dataset.pointer != 'false'){
@@ -119,6 +121,7 @@ function sendReqVarType(game, gameId, name, value, refCard, globErrFn){
 	}
 	
 	const timerTick = document.getElementById('timerTick')
+	console.log('kkkkk')
 	if(timerTick && +timerTick.innerHTML > 2){
 		sendWalking(gameId, attack, defend, typeReq)
 		.then(res=>{

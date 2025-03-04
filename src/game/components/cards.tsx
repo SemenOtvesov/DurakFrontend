@@ -11,8 +11,10 @@ const Cards = React.memo(({game, setAnimatePosition}: {game, setAnimatePosition}
 	const userId = JSON.parse(localStorage.getItem('user') || '').id
 
 	function setUserCards(userCards){
+		
 		const plObj = game?.players.find(el=>el.id == userId)
-		if(plObj.user.isPremium){
+		console.log(game, plObj)
+		if(plObj?.user.isPremium){
 			if(userCards[0]){
 				responsePossibleCards(game.gameId, userId).then((res) => {
 					userCards.forEach(ref=>{

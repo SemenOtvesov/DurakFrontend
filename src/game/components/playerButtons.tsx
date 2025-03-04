@@ -48,7 +48,7 @@ function PlayerButtons ({game, setShowEmojiPopup}){
 	}
 	return <>
 		{(game?.status !== "await" && game?.status !== "load") && (
-				<div className="control_btns" style={{zIndex: 10, bottom: '20%', position: 'fixed', left: 0, width: '100vw'}}>
+				<div className="control_btns" style={{zIndex: 10, bottom: '20%', position: 'fixed', left: 0, width: '100vw', pointerEvents: 'none'}}>
 					{/* {
 						game.type == 'SHULLERS' ? 
 						<button className="cheat">
@@ -57,7 +57,7 @@ function PlayerButtons ({game, setShowEmojiPopup}){
 						<></>
 					} */}
 
-					<div className="player__button-container">
+					<div className="player__button-container" style={{pointerEvents: 'all'}}>
 						<button onClick={passEvent} className={`
 								player__button 
 								${(presenceAttCards && !clickButnUserId) && 'pas'} 
@@ -80,6 +80,7 @@ function PlayerButtons ({game, setShowEmojiPopup}){
 						<button
 							className="react"
 							onClick={()=>setShowEmojiPopup(p=>!p)}
+							style={{pointerEvents: 'all'}}
 						>
 							<img className="react__icon" src={emotionImg}></img>
 						</button>

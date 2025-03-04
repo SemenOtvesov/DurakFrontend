@@ -319,6 +319,7 @@ const CanvasListener = memo(({game})=>{
 		
 		
 		function onDragEnd(e){
+			console.log(e, dragAllCheck)
 			if(dragAllCheck){
 				dragAllCheck = false
 				document.getElementById('gameCanvas')?.classList.add('pointerNone')
@@ -330,6 +331,7 @@ const CanvasListener = memo(({game})=>{
 				const game = globalGame
 				const userC = game.players.findIndex(el=>+el.id == +JSON.parse(localStorage.getItem('user') || '').id)
 	
+				console.log(stop2linter)
 				if(stop2linter){
 					stop2linter = false
 					if(e.target && e.target.children.length == 0 && lockStart && e.target.rotation && dragTarget){
@@ -349,7 +351,6 @@ const CanvasListener = memo(({game})=>{
 											},'click')
 										}else{
 											cardUp(canvasWidth, canvasHeigth, dragCard.name, dragCard.value, e)
-											
 										}
 										
 	
@@ -364,6 +365,13 @@ const CanvasListener = memo(({game})=>{
 						setTimeout(()=>{
 							lockStart = true
 						}, 1000)
+					}else{
+						console.log(dragTarget)
+						if(dragTarget){
+							const localDrag = {...dragCard}
+							clearDrag(dragTarget, localDrag.x, localDrag.y)
+						}
+						
 					}
 	
 					if (dragTarget){
